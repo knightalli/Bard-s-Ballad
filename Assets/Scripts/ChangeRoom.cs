@@ -13,12 +13,9 @@ public class ChangeRoom : MonoBehaviour
         cam = Camera.main.GetComponent<Camera>();
     }
 
-    private void OniggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Player"))
-        {
-            other.transform.position += playerChangePos;
-            cam.transform.position += cameraChangePos;
-        }
+        other.transform.position += playerChangePos;
+        cam.transform.position += cameraChangePos;
     }
 }
