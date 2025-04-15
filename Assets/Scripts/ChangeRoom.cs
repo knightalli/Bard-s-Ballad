@@ -7,6 +7,7 @@ public class ChangeRoom : MonoBehaviour
     public Vector3 cameraChangePos;
     public Vector3 playerChangePos;
     private Camera cam;
+    public CameraController cameraController;
 
     void Start()
     {

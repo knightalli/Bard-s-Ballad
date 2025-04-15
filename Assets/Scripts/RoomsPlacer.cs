@@ -45,10 +45,11 @@ public class RoomsPlacer : MonoBehaviour
         while (limit-- > 0)
         {
             Vector2Int position = vacantPlaces.ElementAt(Random.Range(0, vacantPlaces.Count));
+            newRoom.RotateRandomly();
 
             if (ConnectToSomething(newRoom, position))
             {
-                newRoom.transform.position = new Vector2((position.x - 5) * 14, (position.y - 5) * 8);
+                newRoom.transform.position = new Vector3(position.x - 5, position.y - 5, 0) * 14;
                 spawnedRooms[position.x, position.y] = newRoom;
                 break;
             }
