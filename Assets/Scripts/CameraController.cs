@@ -10,18 +10,38 @@ public class CameraController : MonoBehaviour
     private int lastY;
 
     [SerializeField]
-    float leftLimit;
+    private float initialLeftLimit; // Изначальные значения (SerializeField, чтобы задать в инспекторе)
     [SerializeField]
-    float rightLimit;
+    private float initialRightLimit;
     [SerializeField]
-    float bottomLimit;
+    private float initialBottomLimit;
     [SerializeField]
-    float upperLimit;
+    private float initialUpperLimit;
+
+
+    public float leftLimit; // Текущие значения (public, чтобы другие скрипты не меняли напрямую, а через AddLimits)
+    public float rightLimit;
+    public float bottomLimit;
+    public float upperLimit;
+
+        public void AddLimits(float leftChange, float rightChange, float bottomChange, float upperChange)
+    {
+        leftLimit += leftChange;
+        rightLimit += rightChange;
+        bottomLimit += bottomChange;
+        upperLimit += upperChange;
+    }
 
     void Start()
     {
         offset = new Vector2(0f, Mathf.Abs(offset.y));
         FindPlayer(isDown);
+
+        // Инициализация текущих границ из изначальных
+        leftLimit = initialLeftLimit;
+        rightLimit = initialRightLimit;
+        bottomLimit = initialBottomLimit;
+        upperLimit = initialUpperLimit;
     }
 
     public void FindPlayer(bool playerIsDown)
@@ -72,9 +92,9 @@ public class CameraController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector2(leftLimit, upperLimit), new Vector2(rightLimit, upperLimit));
-        Gizmos.DrawLine(new Vector2(leftLimit, upperLimit), new Vector2(leftLimit, bottomLimit));
-        Gizmos.DrawLine(new Vector2(leftLimit, bottomLimit), new Vector2(rightLimit, bottomLimit));
-        Gizmos.DrawLine(new Vector2(rightLimit, upperLimit), new Vector2(rightLimit, bottomLimit));
+        Gizmos.DrawLine(new Vector2(initialLeftLimit, initialUpperLimit), new Vector2(initialRightLimit, initialUpperLimit));
+        Gizmos.DrawLine(new Vector2(initialLeftLimit, initialUpperLimit), new Vector2(initialLeftLimit, initialBottomLimit));
+        Gizmos.DrawLine(new Vector2(initialLeftLimit, initialBottomLimit), new Vector2(initialRightLimit, initialBottomLimit));
+        Gizmos.DrawLine(new Vector2(initialRightLimit, initialUpperLimit), new Vector2(initialRightLimit, initialBottomLimit));
     }
 }

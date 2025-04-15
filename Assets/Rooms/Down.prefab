@@ -1366,6 +1366,10 @@ MonoBehaviour:
   DoorD: {fileID: 3297481022543526942}
   DoorL: {fileID: 0}
   DoorR: {fileID: 0}
+  RoomMoverU: {fileID: 0}
+  RoomMoverD: {fileID: 1948976201675636313}
+  RoomMoverL: {fileID: 0}
+  RoomMoverR: {fileID: 0}
 --- !u!1 &648478245628510798
 GameObject:
   m_ObjectHideFlags: 0
@@ -4431,7 +4435,7 @@ GameObject:
   - component: {fileID: 880033187399644337}
   - component: {fileID: 7963506352725517793}
   m_Layer: 0
-  m_Name: RoomMover (3)
+  m_Name: RoomMoverD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4509,7 +4513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe4082e57de887a42a419a1241461470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraChangePos: {x: 0, y: -14, z: 0}
+  cameraChangePos: {x: 0, y: 0, z: 0}
   playerChangePos: {x: 0, y: -2, z: 0}
   cameraController: {fileID: 0}
   limitChangeLeft: 0
