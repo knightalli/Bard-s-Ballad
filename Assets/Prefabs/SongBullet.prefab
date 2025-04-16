@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5062006838176053656}
   - component: {fileID: 8520262216120239065}
+  - component: {fileID: 2799579463899589900}
   m_Layer: 0
   m_Name: SongBullet
   m_TagString: Untagged
@@ -84,3 +85,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2799579463899589900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5646680775624300135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ba74283c347af446b489364eac68417, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 30
+  _lifetime: 0.5
+  _distance: 0.5
+  _damage: 1
+  whatIsSolid:
+    serializedVersion: 2
+    m_Bits: 128
