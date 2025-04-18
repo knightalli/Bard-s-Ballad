@@ -101,6 +101,6 @@ MonoBehaviour:
   _lifetime: 0.5
   _distance: 0.5
   _damage: 1
-  whatIsSolid:
+  _whatIsSolid:
     serializedVersion: 2
     m_Bits: 128

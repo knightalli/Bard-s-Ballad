@@ -8,11 +8,11 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float _lifetime;
     [SerializeField] private float _distance;
     [SerializeField] private int _damage;
-    [SerializeField] private LayerMask whatIsSolid;
+    [SerializeField] private LayerMask _whatIsSolid;
 
     private void Update()
     {
-        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, transform.up, _distance, whatIsSolid);
+        RaycastHit2D hitInfo = Physics2D.Raycast(transform.position, transform.up, _distance, _whatIsSolid);
         if (hitInfo.collider != null )
         {
             if (hitInfo.collider.TryGetComponent<Enemy>(out Enemy enemy))

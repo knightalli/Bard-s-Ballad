@@ -7,7 +7,14 @@ public class Lute : MonoBehaviour
     [SerializeField] private Transform _shotPoint;    
     [SerializeField] private float _startTimeBtwShots;
 
+    [SerializeField] private Transform _kickPos;
+    [SerializeField] private float _startTimeBtwKicks;
+    [SerializeField] private LayerMask _solid;
+    [SerializeField] private float _kickRange;
+    [SerializeField] private int _kickDamage;
+
     private float _timeBtwShots;
+    private float _timeBtwKicks;
 
     void Update()
     {
@@ -27,5 +34,29 @@ public class Lute : MonoBehaviour
         {
             _timeBtwShots -= Time.deltaTime;
         }
+
+        if (_timeBtwKicks <= 0)
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                Collider2D[] solids = Physics2D.OverlapCircleAll(_kickPos.position, _kickRange, _solid);
+                for (int i = 0; i < solids.Length; i++)
+                {
+                    solids[i].GetComponent<Enemy>().TakeDamage(_kickDamage);
+                }
+                print("Ближний бой");
+                _timeBtwKicks = _startTimeBtwKicks;
+            }
+        }
+        else
+        {
+            _timeBtwKicks -= Time.deltaTime;
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(_kickPos.position, _kickRange);
     }
 }
