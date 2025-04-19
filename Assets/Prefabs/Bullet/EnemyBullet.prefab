@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5062006838176053656}
   - component: {fileID: 8520262216120239065}
-  - component: {fileID: 2799579463899589900}
+  - component: {fileID: 1926704647471465559}
   m_Layer: 0
-  m_Name: SongBullet
+  m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.5622641, g: 0.041374087, b: 0.041374087, a: 1}
+  m_Color: {r: 0.035820544, g: 0.4415095, b: 0.03831186, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2799579463899589900
+--- !u!114 &1926704647471465559
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,13 +94,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5646680775624300135}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ba74283c347af446b489364eac68417, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c726ff8af1899947a50c770c5ed4a47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 30
-  _lifetime: 0.5
+  _speed: 10
   _distance: 0.5
-  _damage: 1
-  _whatIsSolid:
+  _damage: 15
+  _whatIsPlayer:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 256

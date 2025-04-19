@@ -5,7 +5,6 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private float _lifetime;
     [SerializeField] private float _distance;
     [SerializeField] private int _damage;
     [SerializeField] private LayerMask _whatIsSolid;
@@ -18,7 +17,6 @@ public class Bullet : MonoBehaviour
             if (hitInfo.collider.TryGetComponent<Enemy>(out Enemy enemy))
             {
                 enemy.TakeDamage(_damage);
-
             }
             Destroy(gameObject);
         }
