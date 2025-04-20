@@ -10,7 +10,7 @@ public class CameraController : MonoBehaviour
     private int lastY;
 
     [SerializeField]
-    private float initialLeftLimit; // Изначальные значения (SerializeField, чтобы задать в инспекторе)
+    private float initialLeftLimit;
     [SerializeField]
     private float initialRightLimit;
     [SerializeField]
@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
     private float initialUpperLimit;
 
 
-    public float leftLimit; // Текущие значения (public, чтобы другие скрипты не меняли напрямую, а через AddLimits)
+    public float leftLimit;
     public float rightLimit;
     public float bottomLimit;
     public float upperLimit;
