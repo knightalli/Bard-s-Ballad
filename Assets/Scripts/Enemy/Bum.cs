@@ -12,12 +12,14 @@ public class Bum : Enemy
     [SerializeField] private LayerMask _whatIsPlayer;
 
     private float _timeBtwAttack;
+    private SpriteRenderer _sr;
 
     void Start()
     {
         SetHealth(_customHealth);
         SetDamage(_customDamage);
         _timeBtwAttack = _startTimeBtwAttack;
+        _sr = GetComponent<SpriteRenderer>();
     }
 
     protected override void Update()
@@ -42,6 +44,7 @@ public class Bum : Enemy
     {
         Vector3 direction = (_playerTransform.position - transform.position).normalized;
         transform.position += direction * _speed * Time.deltaTime;
+        _sr.flipX = direction.x < 0;
     }
 
     private void MeleeAttack()
@@ -55,7 +58,7 @@ public class Bum : Enemy
         if (hit != null && hit.TryGetComponent<PlayerBhvr>(out var player))
         {
             player.TakeDamage(_damage);
-            print("Нанесен урон игроку " + _damage);
+            print("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ " + _damage);
         }
     }
 

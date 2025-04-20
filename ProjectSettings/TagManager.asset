@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - RoomPoint
   - Rooms
+  - PlayerObj
   layers:
   - Default
   - TransparentFX

@@ -15,19 +15,22 @@ public class Bandit : Enemy
     [SerializeField] private GameObject _enemyBulletPrefab;
 
     private float _timeBtwAttack;
+    private SpriteRenderer _sr;
     private void Start()
     {
         SetHealth(_customHealth);
         SetDamage(_customDamage);
         _timeBtwAttack = _startTimeBtwAttack;
+        _sr = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
     protected override void Update()
     {
         base.Update();
         if (IsStunned())
             return;
+
+        LookAtPlayer();
 
         if (_timeBtwAttack <= 0f)
         {
@@ -38,6 +41,13 @@ public class Bandit : Enemy
         {
             _timeBtwAttack -= Time.deltaTime;
         }
+    }
+
+    private void LookAtPlayer()
+    {
+        Vector3 direction = (_playerTransform.position - transform.position).normalized;
+
+        _sr.flipX = direction.x < 0;
     }
 
     private void RangedAttack()
