@@ -17,19 +17,19 @@ public class Inventory : MonoBehaviour
     private List<DropZone> activeSlots = new List<DropZone>();
     private ItemSO[] activeItems;
 
-    private void Awake()
+    void Awake()
     {
         activeItems = new ItemSO[maxActive];
     }
 
-    private void Start()
+    void Start()
     {
         if (playerStats == null)
-            Debug.LogError("Inventory: playerStats not assigned", this);
+            Debug.LogError("playerStats not assigned", this);
 
         for (int i = 0; i < maxActive; i++)
         {
-            DropZone slot = Instantiate(activeSlotPrefab, activeContent);
+            var slot = Instantiate(activeSlotPrefab, activeContent, false);
             slot.Setup(null, true, this, i);
             activeSlots.Add(slot);
         }
@@ -38,26 +38,23 @@ public class Inventory : MonoBehaviour
         RefreshGeneral();
     }
 
-    private void RefreshActive()
+    void RefreshActive()
     {
         for (int i = 0; i < activeSlots.Count; i++)
         {
-            ItemSO item = activeItems[i];
-            if (item != null)
-                activeSlots[i].SetIcon(item);
-            else
-                activeSlots[i].SetEmpty();
+            var item = activeItems[i];
+            if (item != null) activeSlots[i].SetIcon(item);
+            else activeSlots[i].SetEmpty();
         }
     }
 
     public void RefreshGeneral()
     {
-        foreach (Transform t in generalContent)
-            Destroy(t.gameObject);
+        foreach (Transform t in generalContent) Destroy(t.gameObject);
 
-        foreach (ItemSO item in generalItems)
+        foreach (var item in generalItems)
         {
-            DropZone slot = Instantiate(generalSlotPrefab, generalContent);
+            var slot = Instantiate(generalSlotPrefab, generalContent, false);
             slot.Setup(item, false, this, -1);
         }
     }
@@ -66,12 +63,10 @@ public class Inventory : MonoBehaviour
     {
         if (toActive)
         {
-            if (targetSlotIndex < 0 || targetSlotIndex >= maxActive)
-                return;
-            if (!generalItems.Contains(item))
-                return;
+            if (targetSlotIndex < 0 || targetSlotIndex >= maxActive) return;
+            if (!generalItems.Contains(item)) return;
 
-            ItemSO old = activeItems[targetSlotIndex];
+            var old = activeItems[targetSlotIndex];
             if (old != null)
             {
                 playerStats.RemoveBonus(old.bonusValue, (int)old.statType);
@@ -85,8 +80,7 @@ public class Inventory : MonoBehaviour
         else
         {
             int idx = Array.IndexOf(activeItems, item);
-            if (idx < 0)
-                return;
+            if (idx < 0) return;
 
             playerStats.RemoveBonus(item.bonusValue, (int)item.statType);
             activeItems[idx] = null;

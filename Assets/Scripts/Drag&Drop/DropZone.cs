@@ -11,7 +11,7 @@ public class DropZone : MonoBehaviour, IDropHandler
     Image iconImage;
     public Sprite emptySprite;
 
-    private void Awake()
+    void Awake()
     {
         iconImage = transform.Find("Icon").GetComponent<Image>();
     }
@@ -27,7 +27,7 @@ public class DropZone : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData e)
     {
-        Drag drag = e.pointerDrag?.GetComponent<Drag>();
+        var drag = e.pointerDrag?.GetComponent<Drag>();
         if (drag != null)
             inventory.HandleDrop(drag.item, slotIndex, isActiveSlot);
     }
@@ -36,8 +36,9 @@ public class DropZone : MonoBehaviour, IDropHandler
     {
         iconImage.sprite = item.icon;
         iconImage.enabled = true;
-        Drag dr = iconImage.gameObject.GetComponent<Drag>()
-                  ?? iconImage.gameObject.AddComponent<Drag>();
+
+        var dr = iconImage.gameObject.GetComponent<Drag>();
+        if (dr == null) dr = iconImage.gameObject.AddComponent<Drag>();
         dr.item = item;
         dr.inventory = inventory;
         dr.icon = item.icon;
@@ -45,9 +46,9 @@ public class DropZone : MonoBehaviour, IDropHandler
 
     public void SetEmpty()
     {
-        Drag dr = iconImage.gameObject.GetComponent<Drag>();
-        if (dr != null)
-            Destroy(dr);
-        iconImage.enabled = false;
+        var dr = iconImage.gameObject.GetComponent<Drag>();
+        if (dr != null) Destroy(dr);
+        iconImage.sprite = emptySprite;
+        iconImage.enabled = true;
     }
 }

@@ -8,7 +8,7 @@ public class GeneralDropZone : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData e)
     {
-        Drag drag = e.pointerDrag?.GetComponent<Drag>();
+        var drag = e.pointerDrag?.GetComponent<Drag>();
         if (drag != null)
             inventory.HandleDrop(drag.item, -1, false);
     }

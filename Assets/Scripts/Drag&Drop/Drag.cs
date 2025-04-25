@@ -10,22 +10,15 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     public Sprite icon;
 
     GameObject dragIcon;
-    Image originalImage;
-
-    private void Awake()
-    {
-        originalImage = GetComponent<Image>();
-    }
 
     public void OnBeginDrag(PointerEventData e)
     {
-        originalImage.enabled = false;
         dragIcon = new GameObject("DragIcon");
-        Image img = dragIcon.AddComponent<Image>();
+        var img = dragIcon.AddComponent<Image>();
         img.sprite = icon;
         dragIcon.transform.SetParent(inventory.dragRoot, false);
         dragIcon.transform.SetAsLastSibling();
-        CanvasGroup cg = dragIcon.AddComponent<CanvasGroup>();
+        var cg = dragIcon.AddComponent<CanvasGroup>();
         cg.blocksRaycasts = false;
     }
 
@@ -39,6 +32,5 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     {
         if (dragIcon != null)
             Destroy(dragIcon);
-        originalImage.enabled = true;
     }
 }
