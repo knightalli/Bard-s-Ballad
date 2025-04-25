@@ -1,57 +1,55 @@
+// Lute.cs
 using UnityEngine;
 
 public class Lute : MonoBehaviour
 {
     [SerializeField] private float _offset;
-    [SerializeField] private GameObject _bullet;
-    [SerializeField] private Transform _shotPoint;    
-    [SerializeField] private float _startTimeBtwShots;
-
+    [SerializeField] private GameObject _bulletPrefab;
+    [SerializeField] private Transform _shotPoint;
+    [SerializeField] private float _baseTimeBtwShots; // базовая задержка
     [SerializeField] private Transform _kickPos;
-    [SerializeField] private float _startTimeBtwKicks;
-    [SerializeField] private LayerMask _solid;
     [SerializeField] private float _kickRange;
-    [SerializeField] private int _kickDamage;
+    [SerializeField] private float _startTimeBtwKicks;
+    [SerializeField] private LayerMask _whatIsSolid;
+    [SerializeField] private int _kickBaseDamage;
+    [SerializeField] private PlayerStats _playerStats;
 
     private float _timeBtwShots;
     private float _timeBtwKicks;
 
     void Update()
     {
-        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+        Vector3 diff = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        float rotZ = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotZ + _offset);
 
-        if (_timeBtwShots <= 0)
+        if (_timeBtwShots <= 0f)
         {
             if (Input.GetMouseButton(0))
             {
-                Instantiate(_bullet, _shotPoint.position, transform.rotation);
-                _timeBtwShots = _startTimeBtwShots;
+                var bulletObj = Instantiate(_bulletPrefab, _shotPoint.position, transform.rotation);
+                var bullet = bulletObj.GetComponent<Bullet>();
+                bullet.Setup(_playerStats.currentPower);
+
+                // тут учитываем скорость стрельбы из PlayerStats.currentSpeed
+                _timeBtwShots = _baseTimeBtwShots / Mathf.Max(1, _playerStats.currentSpeed);
             }
         }
-        else
-        {
-            _timeBtwShots -= Time.deltaTime;
-        }
+        else _timeBtwShots -= Time.deltaTime;
 
-        if (_timeBtwKicks <= 0)
+        if (_timeBtwKicks <= 0f)
         {
             if (Input.GetMouseButtonDown(1))
             {
-                Collider2D[] solids = Physics2D.OverlapCircleAll(_kickPos.position, _kickRange, _solid);
-                for (int i = 0; i < solids.Length; i++)
-                {
-                    solids[i].GetComponent<Enemy>().TakeDamage(_kickDamage);
-                }
-                print("Ближний бой");
+                int totalKickDmg = _kickBaseDamage + _playerStats.currentPower;
+                Collider2D[] hits = Physics2D.OverlapCircleAll(_kickPos.position, _kickRange, _whatIsSolid);
+                foreach (var col in hits)
+                    if (col.TryGetComponent<Enemy>(out var e))
+                        e.TakeDamage(totalKickDmg);
                 _timeBtwKicks = _startTimeBtwKicks;
             }
         }
-        else
-        {
-            _timeBtwKicks -= Time.deltaTime;
-        }
+        else _timeBtwKicks -= Time.deltaTime;
     }
 
     private void OnDrawGizmosSelected()
