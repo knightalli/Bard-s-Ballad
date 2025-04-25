@@ -10,16 +10,28 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
     public Sprite icon;
 
     GameObject dragIcon;
+    CanvasGroup cg;
+    Image originalImage;
+
+    void Awake()
+    {
+        originalImage = GetComponent<Image>();
+        cg = GetComponent<CanvasGroup>();
+        if (cg == null)
+            cg = gameObject.AddComponent<CanvasGroup>();
+    }
 
     public void OnBeginDrag(PointerEventData e)
     {
+        originalImage.color = new Color(1, 1, 1, 0);
+        cg.blocksRaycasts = false;
+
         dragIcon = new GameObject("DragIcon");
         var img = dragIcon.AddComponent<Image>();
         img.sprite = icon;
+        img.raycastTarget = false;
         dragIcon.transform.SetParent(inventory.dragRoot, false);
         dragIcon.transform.SetAsLastSibling();
-        var cg = dragIcon.AddComponent<CanvasGroup>();
-        cg.blocksRaycasts = false;
     }
 
     public void OnDrag(PointerEventData e)
@@ -30,7 +42,14 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void OnEndDrag(PointerEventData e)
     {
+        print("End");
         if (dragIcon != null)
+        {
             Destroy(dragIcon);
+            print("TrueEnd");
+        }
+
+        originalImage.color = Color.white;
+        cg.blocksRaycasts = true;
     }
 }
