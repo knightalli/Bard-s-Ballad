@@ -1,13 +1,14 @@
+// PlayerBhvr.cs
 using UnityEngine;
 
 public class PlayerBhvr : MonoBehaviour
 {
-    [SerializeField] private float _speed;
+    [SerializeField] private float _moveSpeed;        // обычная скорость передвижения
     [SerializeField] private float _dashSpeed;
     [SerializeField] private float _dashDuration;
     [SerializeField] private float _dashCooldown;
-    [SerializeField] private int _health;
     [SerializeField] private LayerMask _whatIsEnemy;
+    [SerializeField] private PlayerStats _playerStats;
 
     private Rigidbody2D _rb;
     private SpriteRenderer _sr;
@@ -23,7 +24,6 @@ public class PlayerBhvr : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponent<SpriteRenderer>();
-
         _enemyLayerIndex = Mathf.RoundToInt(Mathf.Log(_whatIsEnemy.value, 2));
     }
 
@@ -32,16 +32,14 @@ public class PlayerBhvr : MonoBehaviour
         if (!_isDashing)
         {
             _moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-            _moveVelocity = _moveInput.normalized * _speed;
+            _moveVelocity = _moveInput.normalized * _moveSpeed;   // теперь движемся на _moveSpeed
             if (Mathf.Abs(_moveInput.x) > 0.01f)
                 _sr.flipX = _moveInput.x < 0;
         }
 
         _dashCooldownTimer -= Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Space) && _dashCooldownTimer <= 0f && !_isDashing)
-        {
             StartDash();
-        }
 
         if (_isDashing)
         {
@@ -80,7 +78,7 @@ public class PlayerBhvr : MonoBehaviour
     {
         _isDashing = false;
         _isInvincible = false;
-        _sr.color = Color.white;        
+        _sr.color = Color.white;
         Physics2D.IgnoreLayerCollision(gameObject.layer, _enemyLayerIndex, false);
     }
 
@@ -89,9 +87,8 @@ public class PlayerBhvr : MonoBehaviour
         if (_isInvincible)
             return;
 
-        _health -= damage;
-        if (_health <= 0)
+        _playerStats.TakeDamage(damage);
+        if (_playerStats.currentHealth <= 0)
             Destroy(gameObject);
     }
 }
-
