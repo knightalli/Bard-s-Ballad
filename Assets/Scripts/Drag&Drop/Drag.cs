@@ -42,11 +42,9 @@ public class Drag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHand
 
     public void OnEndDrag(PointerEventData e)
     {
-        print("End");
         if (dragIcon != null)
         {
             Destroy(dragIcon);
-            print("TrueEnd");
         }
 
         originalImage.color = Color.white;

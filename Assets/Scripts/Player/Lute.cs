@@ -6,7 +6,7 @@ public class Lute : MonoBehaviour
     [SerializeField] private float _offset;
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _shotPoint;
-    [SerializeField] private float _baseTimeBtwShots; // базовая задержка
+    [SerializeField] private float _baseTimeBtwShots;
     [SerializeField] private Transform _kickPos;
     [SerializeField] private float _kickRange;
     [SerializeField] private float _startTimeBtwKicks;
@@ -19,6 +19,8 @@ public class Lute : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0f) return;
+
         Vector3 diff = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         float rotZ = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotZ + _offset);
@@ -30,12 +32,10 @@ public class Lute : MonoBehaviour
                 var bulletObj = Instantiate(_bulletPrefab, _shotPoint.position, transform.rotation);
                 var bullet = bulletObj.GetComponent<Bullet>();
                 bullet.Setup(_playerStats.currentPower);
-
-                // тут учитываем скорость стрельбы из PlayerStats.currentSpeed
                 _timeBtwShots = _baseTimeBtwShots / Mathf.Max(1, _playerStats.currentSpeed);
             }
         }
-        else _timeBtwShots -= Time.deltaTime;
+        else _timeBtwShots -= Time.unscaledDeltaTime;
 
         if (_timeBtwKicks <= 0f)
         {
@@ -49,12 +49,6 @@ public class Lute : MonoBehaviour
                 _timeBtwKicks = _startTimeBtwKicks;
             }
         }
-        else _timeBtwKicks -= Time.deltaTime;
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(_kickPos.position, _kickRange);
+        else _timeBtwKicks -= Time.unscaledDeltaTime;
     }
 }
