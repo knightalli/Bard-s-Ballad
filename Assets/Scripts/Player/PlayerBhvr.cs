@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerBhvr : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed;        // обычная скорость передвижения
+    [SerializeField] private float _moveSpeed;
     [SerializeField] private float _dashSpeed;
     [SerializeField] private float _dashDuration;
     [SerializeField] private float _dashCooldown;
@@ -29,21 +29,23 @@ public class PlayerBhvr : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0f) return;
+
         if (!_isDashing)
         {
             _moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-            _moveVelocity = _moveInput.normalized * _moveSpeed;   // теперь движемся на _moveSpeed
+            _moveVelocity = _moveInput.normalized * _moveSpeed;
             if (Mathf.Abs(_moveInput.x) > 0.01f)
                 _sr.flipX = _moveInput.x < 0;
         }
 
-        _dashCooldownTimer -= Time.deltaTime;
+        _dashCooldownTimer -= Time.unscaledDeltaTime;
         if (Input.GetKeyDown(KeyCode.Space) && _dashCooldownTimer <= 0f && !_isDashing)
             StartDash();
 
         if (_isDashing)
         {
-            _dashTimeLeft -= Time.deltaTime;
+            _dashTimeLeft -= Time.unscaledDeltaTime;
             if (_dashTimeLeft <= 0f)
                 EndDash();
         }
@@ -51,6 +53,8 @@ public class PlayerBhvr : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Time.timeScale == 0f) return;
+
         if (_isDashing)
         {
             Vector2 dashDir = _moveInput.normalized;
@@ -84,9 +88,7 @@ public class PlayerBhvr : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (_isInvincible)
-            return;
-
+        if (_isInvincible) return;
         _playerStats.TakeDamage(damage);
         if (_playerStats.currentHealth <= 0)
             Destroy(gameObject);
