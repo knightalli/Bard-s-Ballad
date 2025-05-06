@@ -1,4 +1,3 @@
-// Bullet.cs
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -7,6 +6,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float _distance;
     [SerializeField] private int _baseDamage;
     [SerializeField] private LayerMask _whatIsSolid;
+    [SerializeField] private LayerMask _whatIsWall;
 
     private int _damage;
 
@@ -17,7 +17,7 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.up, _distance, _whatIsSolid);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.right, _distance, _whatIsSolid);
         if (hit.collider != null)
         {
             if (hit.collider.TryGetComponent<Enemy>(out var e))
@@ -25,6 +25,14 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        transform.Translate(Vector2.right * _speed * Time.deltaTime);
+
+        RaycastHit2D hitWall = Physics2D.Raycast(transform.position, transform.right, _distance, _whatIsWall);
+        if (hitWall.collider != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        transform.Translate(Vector3.right * _speed * Time.deltaTime, Space.Self);
     }
 }

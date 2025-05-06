@@ -1,15 +1,11 @@
-// InventoryController.cs (не меняется)
 using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
     [SerializeField] private GameObject inventoryUI;
     private bool isOpen = false;
+    public bool IsInventoryOpen => isOpen;
 
-    void Start()
-    {
-        CloseInventory();
-    }
 
     void Update()
     {
@@ -29,8 +25,6 @@ public class InventoryController : MonoBehaviour
         isOpen = true;
         inventoryUI.SetActive(true);
         Time.timeScale = 0f;
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
     }
 
     private void CloseInventory()
@@ -38,7 +32,5 @@ public class InventoryController : MonoBehaviour
         isOpen = false;
         inventoryUI.SetActive(false);
         Time.timeScale = 1f;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 }

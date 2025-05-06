@@ -36,6 +36,7 @@ public class CameraController : MonoBehaviour
     {
         offset = new Vector2(0f, Mathf.Abs(offset.y));
         FindPlayer(isDown);
+        
 
         // Инициализация текущих границ из изначальных
         leftLimit = initialLeftLimit;
@@ -70,11 +71,11 @@ public class CameraController : MonoBehaviour
             Vector2 target;
             if (isDown)
             {
-                target = new Vector3(0f, player.position.y - offset.y);
+                target = new Vector3(player.position.x - offset.x, player.position.y - offset.y);
             }
             else
             {
-                target = new Vector3(0f, player.position.y + offset.y);
+                target = new Vector3(player.position.x + offset.x, player.position.y + offset.y);
             }
 
             Vector3 currentPosition = Vector3.Lerp(transform.position, target, dumping * Time.deltaTime);
