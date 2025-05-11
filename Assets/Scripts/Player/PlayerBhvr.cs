@@ -89,6 +89,7 @@ public class PlayerBhvr : MonoBehaviour
     public void TakeDamage(int damage)
     {
         if (_isInvincible) return;
+        print("Damage to player: " + damage);
         _playerStats.TakeDamage(damage);
         if (_playerStats.currentHealth <= 0)
             Destroy(gameObject);

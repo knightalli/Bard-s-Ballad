@@ -35,6 +35,7 @@ public class BossFightController : Enemy
 
     private Transform player;
     private bool phaseTwoStarted = false;
+    private Transform ricochetMarker;
 
     private void Awake()
     {
@@ -45,6 +46,7 @@ public class BossFightController : Enemy
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        ricochetMarker = GameObject.Find("RicochetMarker").transform;
         StartCoroutine(AttackRoutine());
     }
 
@@ -87,14 +89,26 @@ public class BossFightController : Enemy
             OnBossDefeated();
     }
 
-    private IEnumerator Phase1_RicochetNotes()
+    IEnumerator Phase1_RicochetNotes()
     {
+        float spreadRadius = 2f;  // радиус рассе€ни€ вокруг игрока
         for (int i = 0; i < notesPerVolley; i++)
         {
-            var note = Instantiate(ricochetNotePrefab, transform.position, Quaternion.identity);
-            var rb = note.GetComponent<Rigidbody2D>();
-            Vector2 dir = (player.position - transform.position).normalized;
+            // точка спавна Ч маркер у босса
+            Vector3 spawnPos = ricochetMarker.position;
+
+            // целева€ точка Ч случайно в круге вокруг игрока
+            Vector2 randomOffset = Random.insideUnitCircle * spreadRadius;
+            Vector2 target = (Vector2)player.position + randomOffset;
+
+            // создаЄм ноту
+            RicochetNote note = Instantiate(ricochetNotePrefab, spawnPos, Quaternion.identity);
+            Rigidbody2D rb = note.GetComponent<Rigidbody2D>();
+
+            // направл€ем из spawnPos в target
+            Vector2 dir = (target - (Vector2)spawnPos).normalized;
             rb.velocity = dir * noteSpeed;
+
             yield return new WaitForSeconds(timeBetweenNotes);
         }
     }

@@ -1,10 +1,10 @@
-using System.Collections;
 using UnityEngine;
 
-// Скрипт для огненного следа от нот
 public class FireTrail : MonoBehaviour
 {
+    [Tooltip("Сколько секунд живёт след")]
     public float duration = 3f;
+    [Tooltip("Урон в секунду")]
     public float damagePerSecond = 5f;
 
     private void Start()
@@ -12,14 +12,15 @@ public class FireTrail : MonoBehaviour
         Destroy(gameObject, duration);
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    // Срабатывает, когда любой Rigidbody2D входит в триггер
+    private void OnTriggerStay2D(Collider2D other)
     {
-        var other = collision.collider;
-        if (other.CompareTag("Player"))
+        // Попадаем только по игроку через поиск компонента
+        if (other.TryGetComponent<PlayerBhvr>(out var player))
         {
-            int damageToApply = Mathf.CeilToInt(damagePerSecond * Time.deltaTime);
-            if (damageToApply > 0)
-                other.GetComponent<PlayerBhvr>()?.TakeDamage(damageToApply);
+            int dmg = Mathf.CeilToInt(damagePerSecond * Time.deltaTime);
+            if (dmg > 0)
+                player.TakeDamage(dmg);
         }
     }
 }
