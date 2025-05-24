@@ -1,24 +1,21 @@
 using UnityEngine;
 
-// Скрипт для метеорита
 public class Meteor : MonoBehaviour
 {
-    public float fallSpeed = 12f;
-    public GameObject explosionPrefab;
-    public float explosionRadius = 2f;
-    public int damage = 20;
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private float explosionRadius = 2f;
+    [SerializeField] private int damage = 20;
+    [SerializeField] private float timeBeforeExplosion = 0.7f;
 
-    private void Update()
+    private void Start()
     {
-        transform.position += Vector3.down * fallSpeed * Time.deltaTime;
+        Invoke(nameof(Explode), timeBeforeExplosion);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void Explode()
     {
-        // Взрыв при падении
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
-        // Наносим урон всем в радиусе
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
         foreach (var hit in hits)
         {
@@ -28,4 +25,10 @@ public class Meteor : MonoBehaviour
 
         Destroy(gameObject);
     }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.4f);
+        Gizmos.DrawSphere(transform.position, explosionRadius);
+    }
+
 }
