@@ -16,6 +16,7 @@ public class Inventory : MonoBehaviour
 
     private List<DropZone> activeSlots = new List<DropZone>();
     private ItemSO[] activeItems;
+    private LuteSoundController _luteSoundController;
 
     void Awake()
     {
@@ -26,6 +27,8 @@ public class Inventory : MonoBehaviour
     {
         if (playerStats == null)
             Debug.LogError("playerStats not assigned", this);
+
+        _luteSoundController = FindObjectOfType<LuteSoundController>();
 
         for (int i = 0; i < maxActive; i++)
         {
@@ -45,6 +48,12 @@ public class Inventory : MonoBehaviour
             var item = activeItems[i];
             if (item != null) activeSlots[i].SetIcon(item);
             else activeSlots[i].SetEmpty();
+        }
+
+        // Уведомляем LuteSoundController об изменениях
+        if (_luteSoundController != null)
+        {
+            _luteSoundController.UpdateActiveItems(activeItems);
         }
     }
 

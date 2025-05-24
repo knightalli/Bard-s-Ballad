@@ -8,6 +8,23 @@ public class Enemy : MonoBehaviour
 
     private float _stunDuration = 0.5f;
 
+    private Room currentRoom;
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Room"))
+        {
+            currentRoom = other.GetComponent<Room>();
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Room") && other.GetComponent<Room>() == currentRoom)
+        {
+            currentRoom = null;
+        }
+    }
 
     protected virtual void Update()
     {
@@ -20,13 +37,13 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        print("Нанесен урон " + damage + " здоровье " + _health);
+        print("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ " + damage + " пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ " + _health);
         _health -= damage;
 
         _stunTimer = _stunDuration;
 
         if (_health <= 0)
-            Destroy(gameObject);
+            Die();
     }
 
     protected bool IsStunned() => _stunTimer > 0f;
@@ -46,4 +63,9 @@ public class Enemy : MonoBehaviour
 
 
     public float GetDamage() => _damage;
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
 }
