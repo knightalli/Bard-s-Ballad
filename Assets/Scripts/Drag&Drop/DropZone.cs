@@ -11,11 +11,6 @@ public class DropZone : MonoBehaviour, IDropHandler
     [SerializeField] private Image iconImage;
     [SerializeField] private Sprite emptySprite;
 
-    void Awake()
-    {
-        iconImage = transform.Find("Icon").GetComponent<Image>();
-    }
-
     public void Setup(ItemSO item, bool active, Inventory inv, int index)
     {
         inventory = inv;
