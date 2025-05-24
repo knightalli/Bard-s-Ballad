@@ -269,6 +269,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RoomPrefabs:
   - {fileID: 3727269171989706186, guid: 3d6a3a3694e08684997716c2b5d567cd, type: 3}
+  - {fileID: 3727269171989706186, guid: 3d3295d5ab1195d4c917e2aa52bcfc09, type: 3}
+  - {fileID: 3727269171989706186, guid: cefc118f270d883488b1b38e9b9ee25c, type: 3}
+  - {fileID: 3727269171989706186, guid: 6cf7bb1577e6adb42b1b723fb62935cc, type: 3}
+  BossRoomPrefabs:
+  - {fileID: -3363809836369654501, guid: 02943ee35a7c20b428b2300d8515ad01, type: 3}
   StartingRoom: {fileID: 1538476077}
 --- !u!4 &157072112
 Transform:
@@ -1021,6 +1026,7 @@ GameObject:
   - component: {fileID: 4537978623538211571}
   - component: {fileID: 5462709361975560684}
   - component: {fileID: 8782264751099538663}
+  - component: {fileID: 8782264751099538664}
   m_Layer: 0
   m_Name: Lute
   m_TagString: Untagged
@@ -3306,23 +3312,8 @@ MonoBehaviour:
   _kickBaseDamage: 15
   _playerStats: {fileID: 5176012490116433409}
   _audioSource: {fileID: 8782264751099538663}
-  _shotClips:
-  - {fileID: 8300000, guid: db05e91db2f4bf44790d80db370bacd2, type: 3}
-  - {fileID: 8300000, guid: 67968367f0df6744aadc60775859ced6, type: 3}
-  - {fileID: 8300000, guid: 4ad885fbe333d544fb83241e9eb3f981, type: 3}
-  - {fileID: 8300000, guid: 909b93eea6d261b41988ebe48434d703, type: 3}
-  - {fileID: 8300000, guid: ec77fcb0c0e629843ae628630037ad8f, type: 3}
-  - {fileID: 8300000, guid: 5adc00033fcc6594ea01eeca30f0130f, type: 3}
-  - {fileID: 8300000, guid: 46c90174199ae644da65d2fecbe75d06, type: 3}
-  - {fileID: 8300000, guid: 08bbb39a7f67f90428370f400ccde8f2, type: 3}
-  - {fileID: 8300000, guid: 5abfe1bc28bc8f341b8a8811bd3b1007, type: 3}
-  - {fileID: 8300000, guid: 82fe09265d0177f438cf589525bd0251, type: 3}
-  - {fileID: 8300000, guid: ad6d93cd1e4d2ea468b6bfb8709f26a1, type: 3}
-  - {fileID: 8300000, guid: f674de361ae128943bb3f05dbd274538, type: 3}
-  - {fileID: 8300000, guid: 3071b3d7c8c32a34ebc8c7fbeb88a810, type: 3}
-  - {fileID: 8300000, guid: 910b1bb500541c444842a2c158b4402a, type: 3}
-  - {fileID: 8300000, guid: ecbc27e853e62084c9f38f576a5e34b6, type: 3}
-  - {fileID: 8300000, guid: b6532510b68675240a6f025a1b17e557, type: 3}
+  _defaultShotClips: []
+  _soundController: {fileID: 8782264751099538664}
 --- !u!1 &5467628355254175640
 GameObject:
   m_ObjectHideFlags: 0
@@ -4947,6 +4938,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8782264751099538664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953568749591106764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6305ebc9667994468fb6ab7e675dfe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8787961977215254625
 Transform:
   m_ObjectHideFlags: 0

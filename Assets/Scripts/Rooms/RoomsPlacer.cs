@@ -63,9 +63,15 @@ public class RoomsPlacer : MonoBehaviour
         // Сохраняем позицию комнаты босса
         bossRoomPosition = bossPosition;
         
-        // Определяем направление входа (от дальней комнаты к комнате босса)
-        Vector2Int entranceDirection = bossPosition - farthestRoom;
-        bossRoom.SetEntranceDirection(entranceDirection);
+        // Определяем направление входа в босс-комнату
+        BossRoom bossRoomComponent = bossRoom.GetComponent<BossRoom>();
+        if (bossRoomComponent != null)
+        {
+            if (bossPosition - farthestRoom == new Vector2Int(0, 1)) bossRoomComponent.entranceDirection = "down";
+            else if (bossPosition - farthestRoom == new Vector2Int(0, -1)) bossRoomComponent.entranceDirection = "up";
+            else if (bossPosition - farthestRoom == new Vector2Int(-1, 0)) bossRoomComponent.entranceDirection = "right";
+            else if (bossPosition - farthestRoom == new Vector2Int(1, 0)) bossRoomComponent.entranceDirection = "left";
+        }
         
         // Соединяем с соседней комнатой
         ConnectBossRoom(bossRoom, bossPosition, farthestRoom);

@@ -4,14 +4,18 @@ public class BossRoom : Room
 {
     [Header("Boss Room Settings")]
     public bool isBossRoom = true;
-    private Vector2Int entranceDirection; // Направление, откуда игрок вошел
+    public string entranceDirection; // Направление, откуда игрок вошел
 
-    public void SetEntranceDirection(Vector2Int direction)
+    void Start()
     {
-        entranceDirection = direction;
+        // Отключаем все двери кроме той, через которую игрок вошел
+        if (DoorU != null) DoorU.SetActive(entranceDirection != "up");
+        if (DoorD != null) DoorD.SetActive(entranceDirection != "down");
+        if (DoorL != null) DoorL.SetActive(entranceDirection != "left");
+        if (DoorR != null) DoorR.SetActive(entranceDirection != "right");
         
         // Отключаем коллайдер только у двери, через которую игрок вошел
-        if (direction == Vector2Int.up)
+        if (entranceDirection == "up")
         {
             if (DoorD != null)
             {
@@ -22,7 +26,7 @@ public class BossRoom : Room
                 }
             }
         }
-        else if (direction == Vector2Int.down)
+        else if (entranceDirection == "down")
         {
             if (DoorU != null)
             {
@@ -33,7 +37,7 @@ public class BossRoom : Room
                 }
             }
         }
-        else if (direction == Vector2Int.left)
+        else if (entranceDirection == "left")
         {
             if (DoorR != null)
             {
@@ -44,7 +48,7 @@ public class BossRoom : Room
                 }
             }
         }
-        else if (direction == Vector2Int.right)
+        else if (entranceDirection == "right")
         {
             if (DoorL != null)
             {
