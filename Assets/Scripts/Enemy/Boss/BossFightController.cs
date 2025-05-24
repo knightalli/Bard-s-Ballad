@@ -1,11 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
-// —крипт BossFightController наследует логику от Enemy
 public class BossFightController : Enemy
 {
     [Header("Boss Settings")]
     [SerializeField] private int maxHealth = 100;
+    [SerializeField] private Transform[] _ricochetSpawnPoints;
+    [SerializeField] private Transform[] _ricochetTargetPoint;
+    [SerializeField] private Transform[] bladeSpawnPoints;
+    [SerializeField] private Transform[] bladeTargetPoints;
 
     [Header("Phase Timings")]
     [SerializeField] private float timeBetweenAttacks = 2f;
@@ -17,14 +20,12 @@ public class BossFightController : Enemy
     [SerializeField] private float timeBetweenNotes = 0.4f;
 
     [SerializeField] private UltrasonicBlade ultrasonicBladePrefab;
-    [SerializeField] private int bladesPerVolley = 4;
     [SerializeField] private float bladeSpeed = 10f;
 
     [Header("Phase 2 Ц Apotheosis")]
-    [SerializeField] private Transform meteorMarkerPrefab;
+    [SerializeField] private Transform[] _meteorTargets;
     [SerializeField] private Meteor meteorPrefab;
     [SerializeField] private int meteorsPerRain = 6;
-    [SerializeField] private float meteorSpawnY = 15f;
     [SerializeField] private float timeBeforeMeteorFalls = 1.2f;
     [SerializeField] private float timeBetweenMeteors = 0.5f;
 
@@ -35,24 +36,20 @@ public class BossFightController : Enemy
 
     private Transform player;
     private bool phaseTwoStarted = false;
-    private Transform ricochetMarker;
 
     private void Awake()
     {
-        // «адаЄм начальное здоровье через базовый метод
         SetHealth(maxHealth);
     }
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        ricochetMarker = GameObject.Find("RicochetMarker").transform;
         StartCoroutine(AttackRoutine());
     }
 
     protected override void Update()
     {
-        // ѕоддерживаем логику оглушени€ из Enemy
         base.Update();
     }
 
@@ -62,7 +59,6 @@ public class BossFightController : Enemy
 
         while (GetHealth() > 0 && !IsStunned())
         {
-            // ѕереход во вторую фазу при 50% HP
             if (!phaseTwoStarted && GetHealth() <= maxHealth / 2)
             {
                 phaseTwoStarted = true;
@@ -75,14 +71,18 @@ public class BossFightController : Enemy
                 yield return new WaitForSeconds(timeBetweenAttacks);
                 yield return Phase1_UltrasonicBlades();
                 yield return new WaitForSeconds(timeBetweenAttacks);
-            }
-            else
-            {
                 yield return Phase2_MeteorRain();
                 yield return new WaitForSeconds(timeBetweenAttacks);
                 yield return Phase2_DaggerVolley();
                 yield return new WaitForSeconds(timeBetweenAttacks);
             }
+            //else
+            //{
+            //    yield return Phase2_MeteorRain();
+            //    yield return new WaitForSeconds(timeBetweenAttacks);
+            //    yield return Phase2_DaggerVolley();
+            //    yield return new WaitForSeconds(timeBetweenAttacks);
+            //}
         }
 
         if (GetHealth() <= 0)
@@ -91,22 +91,13 @@ public class BossFightController : Enemy
 
     IEnumerator Phase1_RicochetNotes()
     {
-        float spreadRadius = 2f;  // радиус рассе€ни€ вокруг игрока
-        for (int i = 0; i < notesPerVolley; i++)
+        for (int i = 0; i < _ricochetSpawnPoints.Length; i++)
         {
-            // точка спавна Ч маркер у босса
-            Vector3 spawnPos = ricochetMarker.position;
+            Vector3 spawnPos = _ricochetSpawnPoints[i].position;
+            Vector2 dir = (_ricochetTargetPoint[i].position - spawnPos).normalized;
 
-            // целева€ точка Ч случайно в круге вокруг игрока
-            Vector2 randomOffset = Random.insideUnitCircle * spreadRadius;
-            Vector2 target = (Vector2)player.position + randomOffset;
-
-            // создаЄм ноту
             RicochetNote note = Instantiate(ricochetNotePrefab, spawnPos, Quaternion.identity);
             Rigidbody2D rb = note.GetComponent<Rigidbody2D>();
-
-            // направл€ем из spawnPos в target
-            Vector2 dir = (target - (Vector2)spawnPos).normalized;
             rb.velocity = dir * noteSpeed;
 
             yield return new WaitForSeconds(timeBetweenNotes);
@@ -115,31 +106,30 @@ public class BossFightController : Enemy
 
     private IEnumerator Phase1_UltrasonicBlades()
     {
-        for (int i = 0; i < bladesPerVolley; i++)
+        for (int i = 0; i < bladeSpawnPoints.Length; i++)
         {
-            float angle = (i % 2 == 0) ? 45f : 135f;
-            var rot = Quaternion.Euler(0, 0, angle);
-            var blade = Instantiate(ultrasonicBladePrefab, transform.position, rot);
+            Vector3 spawnPos = bladeSpawnPoints[i].position;
+            Vector3 targetPos = bladeTargetPoints[i].position;
+
+            Vector2 dir = (targetPos - spawnPos).normalized;
+
+            var blade = Instantiate(ultrasonicBladePrefab, spawnPos, Quaternion.identity);
             var rb = blade.GetComponent<Rigidbody2D>();
-            rb.velocity = rot * Vector2.right * bladeSpeed;
+            rb.velocity = dir * bladeSpeed;
         }
+
         yield return null;
     }
 
     private IEnumerator Phase2_MeteorRain()
     {
-        for (int i = 0; i < meteorsPerRain; i++)
+        for (int i = 0; i < _meteorTargets.Length; i++)
         {
-            float x = player.position.x + Random.Range(-5f, 5f);
-            Vector3 spawnPos = new Vector3(x, transform.position.y + meteorSpawnY, 0f);
+            Transform target = _meteorTargets[i];
+            Vector3 meteorPos = new Vector3(target.position.x, target.position.y, target.position.z);
 
-            var marker = Instantiate(meteorMarkerPrefab, spawnPos, Quaternion.identity);
-            yield return new WaitForSeconds(timeBeforeMeteorFalls);
-
-            Instantiate(meteorPrefab, spawnPos, Quaternion.identity);
-            Destroy(marker.gameObject);
-
-            yield return new WaitForSeconds(timeBetweenMeteors);
+            Instantiate(meteorPrefab, meteorPos, Quaternion.identity);
+            yield return new WaitForSeconds(0.01f);
         }
     }
 

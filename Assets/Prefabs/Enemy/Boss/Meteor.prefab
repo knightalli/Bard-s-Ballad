@@ -95,7 +95,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3452330004683161792}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -143,7 +143,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d12450d60a4c048a626393b23a4301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallSpeed: 12
   explosionPrefab: {fileID: 5105457506391506887, guid: 6ca1d702ef690c64793b100578b745ab, type: 3}
   explosionRadius: 2
   damage: 20
+  timeBeforeExplosion: 0.7
