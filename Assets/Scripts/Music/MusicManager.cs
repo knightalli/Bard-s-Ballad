@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -36,7 +35,7 @@ public class MusicManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }   
+    }
 
     private void OnDestroy()
     {
@@ -48,8 +47,9 @@ public class MusicManager : MonoBehaviour
     {
         if (scene.buildIndex == 1) // или scene.name == "ИмяСцены"
         {
-            // Собрать все AudioSource на сцене 1 (НЕ включая DontDestroy объекты)
-            _allMusicSources = FindObjectsOfType<AudioSource>(false);
+            var lute = FindObjectOfType<Lute>(false);
+            _allMusicSources = lute.GetComponentsInChildren<AudioSource>(true);
+
         }
     }
 
