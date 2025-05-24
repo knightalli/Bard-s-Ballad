@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    protected int _health;
-    protected int _damage;
+    protected float _health;
+    protected float _damage;
     protected float _stunTimer;
 
     private float _stunDuration = 0.5f;
@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
         }       
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         print("Нанесен урон " + damage + " здоровье " + _health);
         _health -= damage;
@@ -42,8 +42,8 @@ public class Enemy : MonoBehaviour
         _damage = value;
     }
 
-    public int GetHealth() => _health;
+    public float GetHealth() => _health;
 
 
-    public int GetDamage() => _damage;
+    public float GetDamage() => _damage;
 }

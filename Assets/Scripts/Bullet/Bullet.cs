@@ -8,9 +8,9 @@ public class Bullet : MonoBehaviour
     [SerializeField] private LayerMask _whatIsSolid;
     [SerializeField] private LayerMask _whatIsWall;
 
-    private int _damage;
+    private float _damage;
 
-    public void Setup(int extraPower)
+    public void Setup(float extraPower)
     {
         _damage = _baseDamage + extraPower;
     }

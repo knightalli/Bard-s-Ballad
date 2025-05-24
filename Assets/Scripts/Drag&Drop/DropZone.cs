@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class DropZone : MonoBehaviour, IDropHandler
 {
-    int slotIndex;
-    bool isActive;
-    Inventory inventory;
-    Image iconImage;
-    public Sprite emptySprite;
+    [SerializeField] private int slotIndex;
+    [SerializeField] private bool isActive;
+    [SerializeField] private Inventory inventory;
+    [SerializeField] private Image iconImage;
+    [SerializeField] private Sprite emptySprite;
 
     void Awake()
     {

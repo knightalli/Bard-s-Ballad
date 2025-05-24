@@ -57,7 +57,7 @@ public class Lute : MonoBehaviour
                     _currentShotIndex = (clipIndex + 1) % _shotClips.Length;
                 }
 
-                _timeBtwShots = _baseTimeBtwShots / Mathf.Max(1, _playerStats.currentSpeed);
+                _timeBtwShots = _baseTimeBtwShots;
             }
         }
         else _timeBtwShots -= Time.unscaledDeltaTime;
@@ -66,7 +66,7 @@ public class Lute : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(1))
             {
-                int totalKickDmg = _kickBaseDamage + _playerStats.currentPower;
+                int totalKickDmg = _kickBaseDamage;
                 Collider2D[] hits = Physics2D.OverlapCircleAll(_kickPos.position, _kickRange, _whatIsSolid);
                 foreach (var col in hits)
                     if (col.TryGetComponent<Enemy>(out var e))

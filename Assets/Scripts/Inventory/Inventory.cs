@@ -6,13 +6,13 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public Transform dragRoot;
-    public DropZone generalSlotPrefab;
-    public Transform generalContent;
-    public List<ItemSO> generalItems = new List<ItemSO>();
-    public DropZone activeSlotPrefab;
-    public Transform activeContent;
-    public int maxActive = 3;
-    public PlayerStats playerStats;
+    [SerializeField] private DropZone generalSlotPrefab;
+    [SerializeField] private Transform generalContent;
+    [SerializeField] private List<ItemSO> generalItems = new List<ItemSO>();
+    [SerializeField] private DropZone activeSlotPrefab;
+    [SerializeField] private Transform activeContent;
+    [SerializeField] private int maxActive = 3;
+    [SerializeField] private PlayerStats playerStats;
 
     private List<DropZone> activeSlots = new List<DropZone>();
     private ItemSO[] activeItems;

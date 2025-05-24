@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5971004f13ab8f646b76f60fa4a14734, type: 3}
+  m_Name: DashItem1
+  m_EditorClassIdentifier: 
+  itemName: Key
+  icon: {fileID: 21300000, guid: bb854977c96c3b14bb599596a78290a8, type: 3}
+  bonusValue: 0.5
+  statType: 1
+  audioClips:
+  - {fileID: 8300000, guid: eb83cf9e13142a74599d804fe1f18820, type: 3}
+  - {fileID: 8300000, guid: 6ada2691966422a42a9ebfd5307109bf, type: 3}
+  - {fileID: 8300000, guid: 50b38a16fab1cf5449279b700abf5669, type: 3}
+  - {fileID: 8300000, guid: 3395e6014392259449b33c575294dda5, type: 3}
+  - {fileID: 8300000, guid: d318037fb2f44db4a918e8075d92763e, type: 3}
+  - {fileID: 8300000, guid: 283b641359a3ec349a8703608cc47b1f, type: 3}
+  - {fileID: 8300000, guid: 31a6a1c679eebc4439fac0c82c260e43, type: 3}
+  - {fileID: 8300000, guid: 03ae50b5d80982447a3a064ac02f9388, type: 3}
+  - {fileID: 8300000, guid: e334c076f0b85fa4d93f3d5f1a917152, type: 3}
+  - {fileID: 8300000, guid: 249b1da082e0de9428d3ec0c7789a38a, type: 3}
+  - {fileID: 8300000, guid: bb716db9c94c2aa438146ad403f6283d, type: 3}
+  - {fileID: 8300000, guid: 8052dba2f110c404e927078331c64751, type: 3}
+  - {fileID: 8300000, guid: 56ba078fc17254e45a327bc1f049897c, type: 3}
+  - {fileID: 8300000, guid: bb41322112d6d32439c596da33edc599, type: 3}
+  - {fileID: 8300000, guid: 95df462c803086a438b1d6f8d3188348, type: 3}
+  - {fileID: 8300000, guid: ee7c4bd1a23123349b9449405d09f9e0, type: 3}

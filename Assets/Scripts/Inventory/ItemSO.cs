@@ -4,7 +4,7 @@ using UnityEngine;
 public enum StatType
 {
     Power = 0,
-    Speed = 1,
+    Cooldown = 1,
     Health = 2
 }
 
@@ -13,6 +13,7 @@ public class ItemSO : ScriptableObject
 {
     public string itemName;
     public Sprite icon;
-    public int bonusValue;
+    public float bonusValue;
     public StatType statType;
+    public AudioClip[] audioClips;
 }

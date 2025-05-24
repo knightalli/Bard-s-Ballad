@@ -1,5 +1,4 @@
 // PlayerBhvr.cs
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class PlayerBhvr : MonoBehaviour
@@ -7,7 +6,6 @@ public class PlayerBhvr : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _dashSpeed;
     [SerializeField] private float _dashDuration;
-    [SerializeField] private float _dashCooldown;
     [SerializeField] private LayerMask _whatIsEnemy;
     [SerializeField] private PlayerStats _playerStats;
 
@@ -74,7 +72,7 @@ public class PlayerBhvr : MonoBehaviour
         _isDashing = true;
         _isInvincible = true;
         _dashTimeLeft = _dashDuration;
-        _dashCooldownTimer = _dashCooldown + _dashDuration;
+        _dashCooldownTimer = _playerStats.currentCooldown + _dashDuration;
         _sr.color = new Color(1f, 1f, 1f, 0.5f);
         Physics2D.IgnoreLayerCollision(gameObject.layer, _enemyLayerIndex, true);
     }
@@ -87,7 +85,7 @@ public class PlayerBhvr : MonoBehaviour
         Physics2D.IgnoreLayerCollision(gameObject.layer, _enemyLayerIndex, false);
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (_isInvincible) return;
         _playerStats.TakeDamage(damage);
