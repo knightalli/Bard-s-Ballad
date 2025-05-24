@@ -50,8 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _customHealth: 50
   _startTimeBtwAttack: 0.7
-  _playerTransform: {fileID: 0}
-  _speed: 3
+  _moveSpeed: 9
+  _attackRange: 1.5
   _enemyAttackPoint: {fileID: 3664592728615209122}
   _enemyAttackRange: 0.77
   _customDamage: 10
@@ -99,8 +99,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.17867568, g: 0.3489458, b: 0.3962264, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 8d937e7e232180b43a0075ebaeb844b5, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -169,18 +169,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.06865767}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 3.2, y: 3.2}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 1.9906306}
   m_EdgeRadius: 0
 --- !u!1 &6994215493218385754
 GameObject:

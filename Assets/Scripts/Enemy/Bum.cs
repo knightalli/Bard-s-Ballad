@@ -4,8 +4,8 @@ public class Bum : Enemy
 {
     [SerializeField] private int _customHealth;
     [SerializeField] private float _startTimeBtwAttack;
-    [SerializeField] private Transform _playerTransform;
-    [SerializeField] private float _speed = 3f;
+    [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private float _attackRange = 1.5f;
     [SerializeField] private Transform _enemyAttackPoint;
     [SerializeField] private float _enemyAttackRange = 1f;
     [SerializeField] private int _customDamage;
@@ -13,9 +13,25 @@ public class Bum : Enemy
 
     private float _timeBtwAttack;
     private SpriteRenderer _sr;
+    private Transform _playerTransform;
+    private Rigidbody2D _rb;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+        _rb = GetComponent<Rigidbody2D>();
+        
+        // Находим игрока по тегу
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            _playerTransform = player.transform;
+        }
+        else
+        {
+            Debug.LogError("Игрок не найден на сцене! Убедитесь, что у игрока установлен тег 'Player'");
+        }
+
         SetHealth(_customHealth);
         SetDamage(_customDamage);
         _timeBtwAttack = _startTimeBtwAttack;
@@ -25,10 +41,31 @@ public class Bum : Enemy
     protected override void Update()
     {
         base.Update();
-        if (IsStunned())
+        
+        if (_playerTransform == null)
+        {
+            // Пытаемся найти игрока, если ссылка потеряна
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                _playerTransform = player.transform;
+            }
             return;
+        }
 
-        MoveTowardsPlayer();
+        if (!IsStunned())
+        {
+            float distanceToPlayer = Vector2.Distance(transform.position, _playerTransform.position);
+            if (distanceToPlayer > _attackRange)
+            {
+                MoveTowardsPlayer();
+            }
+            else
+            {
+                _rb.velocity = Vector2.zero;
+            }
+        }
+
         if (_timeBtwAttack <= 0f)
         {
             MeleeAttack();
@@ -42,8 +79,10 @@ public class Bum : Enemy
 
     private void MoveTowardsPlayer()
     {
-        Vector3 direction = (_playerTransform.position - transform.position).normalized;
-        transform.position += direction * _speed * Time.deltaTime;
+        if (_playerTransform == null) return;
+
+        Vector2 direction = (_playerTransform.position - transform.position).normalized;
+        _rb.velocity = direction * _moveSpeed;
         _sr.flipX = direction.x < 0;
     }
 

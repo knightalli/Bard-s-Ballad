@@ -13,7 +13,7 @@ public class BossFightController : Enemy
     [Header("Phase Timings")]
     [SerializeField] private float timeBetweenAttacks = 2f;
 
-    [Header("Phase 1 – Rock Storm")]
+    [Header("Phase 1 ï¿½ Rock Storm")]
     [SerializeField] private RicochetNote ricochetNotePrefab;
     [SerializeField] private float noteSpeed = 8f;
     [SerializeField] private float timeBetweenNotes = 0.4f;
@@ -21,7 +21,7 @@ public class BossFightController : Enemy
     [SerializeField] private UltrasonicBlade ultrasonicBladePrefab;
     [SerializeField] private float bladeSpeed = 10f;
 
-    [Header("Phase 2 – Apotheosis")]
+    [Header("Phase 2 ï¿½ Apotheosis")]
     [SerializeField] private Transform[] _meteorTargets;
     [SerializeField] private Meteor meteorPrefab;
 
@@ -38,8 +38,9 @@ public class BossFightController : Enemy
         SetHealth(maxHealth);
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         StartCoroutine(AttackRoutine());
     }

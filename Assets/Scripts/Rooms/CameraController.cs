@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-
     public float dumping = 1.5f;
     public Vector2 offset = new Vector2(0f, 1f);
     public bool isDown;
@@ -18,13 +17,15 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float initialUpperLimit;
 
-
     public float leftLimit;
     public float rightLimit;
     public float bottomLimit;
     public float upperLimit;
 
-        public void AddLimits(float leftChange, float rightChange, float bottomChange, float upperChange)
+    [SerializeField]
+    private float orthographicSize = 6f;
+
+    public void AddLimits(float leftChange, float rightChange, float bottomChange, float upperChange)
     {
         leftLimit += leftChange;
         rightLimit += rightChange;
@@ -37,12 +38,12 @@ public class CameraController : MonoBehaviour
         offset = new Vector2(0f, Mathf.Abs(offset.y));
         FindPlayer(isDown);
         
-
-        // Инициализация текущих границ из изначальных
         leftLimit = initialLeftLimit;
         rightLimit = initialRightLimit;
         bottomLimit = initialBottomLimit;
         upperLimit = initialUpperLimit;
+
+        Camera.main.orthographicSize = orthographicSize;
     }
 
     public void FindPlayer(bool playerIsDown)

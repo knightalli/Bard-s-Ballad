@@ -7,17 +7,31 @@ public class Bandit : Enemy
 {
     [SerializeField] private int _customHealth;
     [SerializeField] private float _startTimeBtwAttack;
-    [SerializeField] private Transform _playerTransform;
-
     [SerializeField] private Transform _enemyAttackPoint;
+    [SerializeField] private float _enemyAttackRange = 1f;
     [SerializeField] private int _customDamage;
     [SerializeField] private LayerMask _whatIsPlayer;
     [SerializeField] private GameObject _enemyBulletPrefab;
 
     private float _timeBtwAttack;
     private SpriteRenderer _sr;
-    private void Start()
+    private Transform _playerTransform;
+
+    protected override void Start()
     {
+        base.Start();
+        
+        // Находим игрока по тегу
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+        {
+            _playerTransform = player.transform;
+        }
+        else
+        {
+            Debug.LogError("Игрок не найден на сцене! Убедитесь, что у игрока установлен тег 'Player'");
+        }
+
         SetHealth(_customHealth);
         SetDamage(_customDamage);
         _timeBtwAttack = _startTimeBtwAttack;
@@ -27,10 +41,22 @@ public class Bandit : Enemy
     protected override void Update()
     {
         base.Update();
-        if (IsStunned())
+        
+        if (_playerTransform == null)
+        {
+            // Пытаемся найти игрока, если ссылка потеряна
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                _playerTransform = player.transform;
+            }
             return;
+        }
 
-        LookAtPlayer();
+        if (!IsStunned())
+        {
+            LookAtPlayer();
+        }
 
         if (_timeBtwAttack <= 0f)
         {
@@ -45,13 +71,16 @@ public class Bandit : Enemy
 
     private void LookAtPlayer()
     {
-        Vector3 direction = (_playerTransform.position - transform.position).normalized;
+        if (_playerTransform == null) return;
 
+        Vector3 direction = (_playerTransform.position - transform.position).normalized;
         _sr.flipX = direction.x < 0;
     }
 
     private void RangedAttack()
     {
+        if (_playerTransform == null) return;
+
         Vector2 dir = (_playerTransform.position - _enemyAttackPoint.position).normalized;
                
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;

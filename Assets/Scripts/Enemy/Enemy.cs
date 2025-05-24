@@ -10,17 +10,24 @@ public class Enemy : MonoBehaviour
 
     private Room currentRoom;
 
+    protected virtual void Start()
+    {
+        // Базовая инициализация
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Room"))
+        Room room = other.GetComponent<Room>();
+        if (room != null)
         {
-            currentRoom = other.GetComponent<Room>();
+            currentRoom = room;
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Room") && other.GetComponent<Room>() == currentRoom)
+        Room room = other.GetComponent<Room>();
+        if (room != null && room == currentRoom)
         {
             currentRoom = null;
         }
@@ -37,7 +44,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        print("������� ���� " + damage + " �������� " + _health);
+        print(" " + damage + "  " + _health);
         _health -= damage;
 
         _stunTimer = _stunDuration;
@@ -53,7 +60,6 @@ public class Enemy : MonoBehaviour
         _health = value;
     }
 
-
     public void SetDamage(int value)
     {
         _damage = value;
@@ -61,11 +67,19 @@ public class Enemy : MonoBehaviour
 
     public float GetHealth() => _health;
 
-
     public float GetDamage() => _damage;
+
+    public void SetCurrentRoom(Room room)
+    {
+        currentRoom = room;
+    }
 
     public void Die()
     {
+        if (currentRoom != null)
+        {
+            currentRoom.OnEnemyDeath(gameObject);
+        }
         Destroy(gameObject);
     }
 }

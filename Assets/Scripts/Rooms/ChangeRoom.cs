@@ -13,32 +13,49 @@ public class ChangeRoom : MonoBehaviour
     public float limitChangeBottom;
     public float limitChangeUpper;
 
+    private Room currentRoom;
+    private Room nextRoom;
+
     void Start()
     {
         cam = Camera.main.GetComponent<Camera>();
         if (cameraController == null)
         {
-            // Найти камеру по тегу, если ссылка не назначена
-            GameObject mainCamera = GameObject.FindGameObjectWithTag("MainCamera"); // Или используйте ваш тег
+            GameObject mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             if (mainCamera != null)
             {
                 cameraController = mainCamera.GetComponent<CameraController>();
-                if (cameraController == null)
-                {
-                    Debug.LogError("CameraController не найден на MainCamera!");
-                }
-            }
-            else
-            {
-                Debug.LogError("MainCamera с тегом MainCamera не найдена!");
             }
         }
+
+        currentRoom = transform.parent.GetComponent<Room>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        other.transform.position += playerChangePos;
-        cam.transform.position += cameraChangePos;
-        cameraController.AddLimits(limitChangeLeft, limitChangeRight, limitChangeBottom, limitChangeUpper);
+        if (other.CompareTag("Player"))
+        {
+            other.transform.position += playerChangePos;
+            cam.transform.position += cameraChangePos;
+            cameraController.AddLimits(limitChangeLeft, limitChangeRight, limitChangeBottom, limitChangeUpper);
+
+            Vector2 nextRoomPos = (Vector2)transform.position + (Vector2)playerChangePos;
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(nextRoomPos, 0.1f);
+            foreach (Collider2D collider in colliders)
+            {
+                Room room = collider.GetComponent<Room>();
+                if (room != null && room != currentRoom)
+                {
+                    nextRoom = room;
+                    break;
+                }
+            }
+
+            if (nextRoom != null && !nextRoom.isVisited)
+            {
+                nextRoom.isVisited = true;
+                nextRoom.OnRoomEnter();
+            }
+        }
     }
 }

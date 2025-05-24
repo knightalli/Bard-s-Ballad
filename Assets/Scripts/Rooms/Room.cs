@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Room : MonoBehaviour
 {
@@ -11,9 +12,112 @@ public class Room : MonoBehaviour
     public GameObject RoomMoverD;
     public GameObject RoomMoverL;
     public GameObject RoomMoverR;
+
+    [Header("Enemy Spawn Settings")]
+    public Transform[] enemySpawnPoints;
+    public GameObject[] possibleEnemies;
+    public int minEnemies = 2;
+    public int maxEnemies = 4;
+
+    private List<GameObject> spawnedEnemies = new List<GameObject>();
+    public bool isVisited = false;
+    private bool isRoomCleared = false;
+
+    // Список для хранения активных дверей
+    private List<GameObject> activeDoors = new List<GameObject>();
+    private List<GameObject> activeRoomMovers = new List<GameObject>();
+
+    public bool isStartRoom = false;
+
     void Start()
     {
+        // Добавляем триггер на комнату, если его нет
+        if (GetComponent<BoxCollider2D>() == null)
+        {
+            BoxCollider2D roomTrigger = gameObject.AddComponent<BoxCollider2D>();
+            roomTrigger.isTrigger = true;
+            roomTrigger.size = new Vector2(20, 20);
+        }
+    }
+
+    public void OnRoomEnter()
+    {
+        if (!isRoomCleared)
+        {
+            // Проверяем, есть ли враги для спавна
+            if (possibleEnemies.Length > 0 && minEnemies > 0)
+            {
+                LockDoors();
+                SpawnEnemies();
+            }
+            else
+            {
+                // Если врагов нет, помечаем комнату как пройденную
+                isRoomCleared = true;
+            }
+        }
+    }
+
+    private void LockDoors()
+    {
+        // Активируем все визуальные двери
+        if (DoorU != null)
+        {
+            DoorU.GetComponent<Door>()?.Lock();
+        }
+        if (DoorD != null)
+        {
+            DoorD.GetComponent<Door>()?.Lock();
+        }
+        if (DoorL != null)
+        {
+            DoorL.GetComponent<Door>()?.Lock();
+        }
+        if (DoorR != null)
+        {
+            DoorR.GetComponent<Door>()?.Lock();
+        }
+    }
+
+    private void UnlockDoors()
+    {
+        // Отключаем только те двери, которые были заблокированы
+        if (DoorU != null) DoorU.GetComponent<Door>()?.Unlock();
+        if (DoorD != null) DoorD.GetComponent<Door>()?.Unlock();
+        if (DoorL != null) DoorL.GetComponent<Door>()?.Unlock();
+        if (DoorR != null) DoorR.GetComponent<Door>()?.Unlock();
+    }
+
+    private void SpawnEnemies()
+    {
+        if (enemySpawnPoints.Length == 0 || possibleEnemies.Length == 0) return;
+
+        int enemyCount = Random.Range(minEnemies, maxEnemies + 1);
         
+        for (int i = 0; i < enemyCount; i++)
+        {
+            Transform spawnPoint = enemySpawnPoints[Random.Range(0, enemySpawnPoints.Length)];
+            GameObject enemyPrefab = possibleEnemies[Random.Range(0, possibleEnemies.Length)];
+            
+            GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+            Enemy enemyComponent = enemy.GetComponent<Enemy>();
+            if (enemyComponent != null)
+            {
+                enemyComponent.SetCurrentRoom(this);
+            }
+            spawnedEnemies.Add(enemy);
+        }
+    }
+
+    public void OnEnemyDeath(GameObject enemy)
+    {
+        spawnedEnemies.Remove(enemy);
+        
+        if (spawnedEnemies.Count == 0)
+        {
+            isRoomCleared = true;
+            UnlockDoors();
+        }
     }
 
     public void RotateRandomly()
