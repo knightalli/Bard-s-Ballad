@@ -34,7 +34,7 @@ public class Room : MonoBehaviour
         if (count == 1)
         {
             ChangeRoom roomChangerLToD = RoomMoverL.GetComponent<ChangeRoom>();
-            roomChangerLToD.playerChangePos = new Vector3(0f, -2f);
+            roomChangerLToD.playerChangePos = new Vector3(0f, -4f);
 
             roomChangerLToD.limitChangeBottom = -22;
             roomChangerLToD.limitChangeUpper = -22;
@@ -42,7 +42,7 @@ public class Room : MonoBehaviour
             roomChangerLToD.limitChangeRight = 0;
 
             ChangeRoom roomChangerUToL = RoomMoverU.GetComponent<ChangeRoom>();
-            roomChangerUToL.playerChangePos = new Vector3(-2f, 0f);
+            roomChangerUToL.playerChangePos = new Vector3(-4f, 0f);
 
             roomChangerUToL.limitChangeBottom = 0;
             roomChangerUToL.limitChangeUpper = 0;
@@ -50,7 +50,7 @@ public class Room : MonoBehaviour
             roomChangerUToL.limitChangeRight = -22;
 
             ChangeRoom roomChangerRToU = RoomMoverR.GetComponent<ChangeRoom>();
-            roomChangerRToU.playerChangePos = new Vector3(0f, 2f);
+            roomChangerRToU.playerChangePos = new Vector3(0f, 4f);
 
             roomChangerRToU.limitChangeBottom = 22;
             roomChangerRToU.limitChangeUpper = 22;
@@ -58,7 +58,7 @@ public class Room : MonoBehaviour
             roomChangerRToU.limitChangeRight = 0;
 
             ChangeRoom roomChangerDToR = RoomMoverD.GetComponent<ChangeRoom>();
-            roomChangerDToR.playerChangePos = new Vector3(2f, 0f);
+            roomChangerDToR.playerChangePos = new Vector3(4f, 0f);
 
             roomChangerDToR.limitChangeBottom = 0;
             roomChangerDToR.limitChangeUpper = 0;
@@ -68,7 +68,7 @@ public class Room : MonoBehaviour
         else if (count == 2)
         {
             ChangeRoom roomChangerLToR = RoomMoverL.GetComponent<ChangeRoom>();
-            roomChangerLToR.playerChangePos = new Vector3(2f, 0f);
+            roomChangerLToR.playerChangePos = new Vector3(4f, 0f);
 
             roomChangerLToR.limitChangeBottom = 0;
             roomChangerLToR.limitChangeUpper = 0;
@@ -76,7 +76,7 @@ public class Room : MonoBehaviour
             roomChangerLToR.limitChangeRight = 22;
 
             ChangeRoom roomChangerUToD = RoomMoverU.GetComponent<ChangeRoom>();
-            roomChangerUToD.playerChangePos = new Vector3(0f, -2f);
+            roomChangerUToD.playerChangePos = new Vector3(0f, -4f);
 
             roomChangerUToD.limitChangeBottom = -22;
             roomChangerUToD.limitChangeUpper = -22;
@@ -84,7 +84,7 @@ public class Room : MonoBehaviour
             roomChangerUToD.limitChangeRight = 0;
 
             ChangeRoom roomChangerRToL = RoomMoverR.GetComponent<ChangeRoom>();
-            roomChangerRToL.playerChangePos = new Vector3(-2f, 0f);
+            roomChangerRToL.playerChangePos = new Vector3(-4f, 0f);
 
             roomChangerRToL.limitChangeBottom = 0;
             roomChangerRToL.limitChangeUpper = 0;
@@ -92,7 +92,7 @@ public class Room : MonoBehaviour
             roomChangerRToL.limitChangeRight = -22;
 
             ChangeRoom roomChangerDToU = RoomMoverD.GetComponent<ChangeRoom>();
-            roomChangerDToU.playerChangePos = new Vector3(0f, 2f);
+            roomChangerDToU.playerChangePos = new Vector3(0f, 4f);
 
             roomChangerDToU.limitChangeBottom = 22;
             roomChangerDToU.limitChangeUpper = 22;
@@ -102,7 +102,7 @@ public class Room : MonoBehaviour
         else if (count == 3)
         {
             ChangeRoom roomChangerLToU = RoomMoverL.GetComponent<ChangeRoom>();
-            roomChangerLToU.playerChangePos = new Vector3(0f, 2f);
+            roomChangerLToU.playerChangePos = new Vector3(0f, 4f);
 
             roomChangerLToU.limitChangeBottom = 22;
             roomChangerLToU.limitChangeUpper = 22;
@@ -110,7 +110,7 @@ public class Room : MonoBehaviour
             roomChangerLToU.limitChangeRight = 0;
 
             ChangeRoom roomChangerUToR = RoomMoverU.GetComponent<ChangeRoom>();
-            roomChangerUToR.playerChangePos = new Vector3(2f, 0f);
+            roomChangerUToR.playerChangePos = new Vector3(4f, 0f);
 
             roomChangerUToR.limitChangeBottom = 0;
             roomChangerUToR.limitChangeUpper = 0;
@@ -118,7 +118,7 @@ public class Room : MonoBehaviour
             roomChangerUToR.limitChangeRight = 22;
 
             ChangeRoom roomChangerRToD = RoomMoverR.GetComponent<ChangeRoom>();
-            roomChangerRToD.playerChangePos = new Vector3(0f, -2f);
+            roomChangerRToD.playerChangePos = new Vector3(0f, -4f);
 
             roomChangerRToD.limitChangeBottom = -22;
             roomChangerRToD.limitChangeUpper = -22;
@@ -126,7 +126,7 @@ public class Room : MonoBehaviour
             roomChangerRToD.limitChangeRight = 0;
 
             ChangeRoom roomChangerDToL = RoomMoverD.GetComponent<ChangeRoom>();
-            roomChangerDToL.playerChangePos = new Vector3(-2f, 0f);
+            roomChangerDToL.playerChangePos = new Vector3(-4f, 0f);
 
             roomChangerDToL.limitChangeBottom = 0;
             roomChangerDToL.limitChangeUpper = 0;
