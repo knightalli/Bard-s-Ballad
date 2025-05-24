@@ -659,6 +659,34 @@ PrefabInstance:
       propertyPath: playerStats
       value: 
       objectReference: {fileID: 5176012490116433409}
+    - target: {fileID: 6700195094348766065, guid: 03c3af5da5333574db3ac0a331f57786, type: 3}
+      propertyPath: generalItems.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6700195094348766065, guid: 03c3af5da5333574db3ac0a331f57786, type: 3}
+      propertyPath: generalItems.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3c00249a59a879849a06752d65450bdb, type: 2}
+    - target: {fileID: 6700195094348766065, guid: 03c3af5da5333574db3ac0a331f57786, type: 3}
+      propertyPath: generalItems.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: ea5a300913fddb743a050bdb0c9ed728, type: 2}
+    - target: {fileID: 6700195094348766065, guid: 03c3af5da5333574db3ac0a331f57786, type: 3}
+      propertyPath: generalItems.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 70205c10c3078ac419f1c181c56ff5d2, type: 2}
+    - target: {fileID: 6700195094348766065, guid: 03c3af5da5333574db3ac0a331f57786, type: 3}
+      propertyPath: generalItems.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8ef7037b70564ef47a4f595af758f444, type: 2}
+    - target: {fileID: 6700195094348766065, guid: 03c3af5da5333574db3ac0a331f57786, type: 3}
+      propertyPath: generalItems.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3184f05358a1f8e4397033ebb913e960, type: 2}
+    - target: {fileID: 6700195094348766065, guid: 03c3af5da5333574db3ac0a331f57786, type: 3}
+      propertyPath: generalItems.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: 13cfd3b707424104691abd920b81fbba, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1892,7 +1920,7 @@ MonoBehaviour:
   _offset: 0
   _bulletPrefab: {fileID: 5646680775624300135, guid: 3902b00c63ade6148bfe8e3621062d14, type: 3}
   _shotPoint: {fileID: 6683179065144571254}
-  _baseTimeBtwShots: 2
+  _baseTimeBtwShots: 0.37
   _kickPos: {fileID: 8824314762120696943}
   _kickRange: 0.93
   _startTimeBtwKicks: 1
