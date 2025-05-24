@@ -4068,7 +4068,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &5176012490116433409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4756,6 +4756,32 @@ MonoBehaviour:
   - {fileID: 6091264779098646477}
   - {fileID: 6856565854592503221}
   - {fileID: 1192088476249242468}
+  daggerSpawnPoints:
+  - {fileID: 8415997118235973688}
+  - {fileID: 4957732679792858145}
+  - {fileID: 8982859375964822504}
+  - {fileID: 5997953745392860721}
+  - {fileID: 6630619748591024258}
+  - {fileID: 4265146337350685041}
+  - {fileID: 4092574562343922642}
+  - {fileID: 5272896980112862419}
+  - {fileID: 1085144180112929893}
+  - {fileID: 6912444462597125595}
+  - {fileID: 2842493040067029062}
+  - {fileID: 2334746216868384320}
+  daggerTargetPoints:
+  - {fileID: 5953520155594486609}
+  - {fileID: 8211686805461542002}
+  - {fileID: 8787961977215254625}
+  - {fileID: 1856019696594236935}
+  - {fileID: 6960017010994952257}
+  - {fileID: 4264312898735917866}
+  - {fileID: 4777780404979483340}
+  - {fileID: 9047427503798818812}
+  - {fileID: 2654440773979403266}
+  - {fileID: 2825226156359940730}
+  - {fileID: 8856660692748270262}
+  - {fileID: 8356678505836238610}
   timeBetweenAttacks: 2
   ricochetNotePrefab: {fileID: 6613207661740838081, guid: 3f7d4246856c041449d9b121891fafb1, type: 3}
   noteSpeed: 8
@@ -4790,7 +4816,7 @@ MonoBehaviour:
   meteorPrefab: {fileID: 2256202011637838861, guid: c89f5ccec61961b40803c633b484b923, type: 3}
   daggerPrefab: {fileID: 8464106622095857692, guid: baa6305ff629b8a48931b57a7f3ed98d, type: 3}
   daggersPerVolley: 3
-  daggerSpeed: 12
+  daggerSpeed: 15
   timeBetweenDaggers: 0.2
 --- !u!1 &6821591270546308038
 GameObject:
