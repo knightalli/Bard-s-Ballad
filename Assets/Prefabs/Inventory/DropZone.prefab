@@ -89,6 +89,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841ac3348fb6e1c438b95dd351895924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slotIndex: 0
+  isActive: 0
+  inventory: {fileID: 0}
+  iconImage: {fileID: 2537838672561799077}
   emptySprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &7009744085231546749
 GameObject:

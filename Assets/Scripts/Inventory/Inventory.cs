@@ -38,6 +38,12 @@ public class Inventory : MonoBehaviour
         RefreshGeneral();
     }
 
+    public void AddItem(ItemSO item)
+    {
+        generalItems.Add(item);
+        RefreshGeneral();
+    }
+
     void RefreshActive()
     {
         for (int i = 0; i < activeSlots.Count; i++)
