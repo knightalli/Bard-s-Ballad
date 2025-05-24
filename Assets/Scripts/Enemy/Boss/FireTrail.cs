@@ -3,9 +3,9 @@ using UnityEngine;
 public class FireTrail : MonoBehaviour
 {
     [Tooltip("Сколько секунд живёт след")]
-    public float duration = 3f;
+    [SerializeField] private float duration = 3f;
     [Tooltip("Урон в секунду")]
-    public float damagePerSecond = 5f;
+    [SerializeField] private float damagePerSecond = 5f;
 
     private void Start()
     {

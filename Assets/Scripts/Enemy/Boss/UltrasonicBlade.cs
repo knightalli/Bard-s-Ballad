@@ -3,8 +3,8 @@ using UnityEngine;
 // Скрипт для ультразвукового клинка
 public class UltrasonicBlade : MonoBehaviour
 {
-    public float lifetime = 5f;
-    public int damage = 15;
+    [SerializeField] private float lifetime = 5f;
+    [SerializeField] private int damage = 15;
 
     private void Start()
     {

@@ -3,8 +3,8 @@ using UnityEngine;
 // Скрипт для звукового кинжала
 public class DaggerProjectile : MonoBehaviour
 {
-    public float lifetime = 5f;
-    public int damage = 12;
+    [SerializeField] private float lifetime = 5f;
+    [SerializeField] private int damage = 12;
 
     private void Start()
     {

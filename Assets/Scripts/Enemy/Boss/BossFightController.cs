@@ -15,7 +15,6 @@ public class BossFightController : Enemy
 
     [Header("Phase 1 – Rock Storm")]
     [SerializeField] private RicochetNote ricochetNotePrefab;
-    [SerializeField] private int notesPerVolley = 5;
     [SerializeField] private float noteSpeed = 8f;
     [SerializeField] private float timeBetweenNotes = 0.4f;
 
@@ -25,9 +24,6 @@ public class BossFightController : Enemy
     [Header("Phase 2 – Apotheosis")]
     [SerializeField] private Transform[] _meteorTargets;
     [SerializeField] private Meteor meteorPrefab;
-    [SerializeField] private int meteorsPerRain = 6;
-    [SerializeField] private float timeBeforeMeteorFalls = 1.2f;
-    [SerializeField] private float timeBetweenMeteors = 0.5f;
 
     [SerializeField] private DaggerProjectile daggerPrefab;
     [SerializeField] private int daggersPerVolley = 3;

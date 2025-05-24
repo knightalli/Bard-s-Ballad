@@ -5,30 +5,25 @@ using UnityEngine.UI;
 public class PlayerStats : MonoBehaviour
 {
     [Header("Base Values")]
-    public int basePower = 10;
-    public int baseSpeed = 5;
-    public int baseHealth = 100;
+    public float basePower = 10;
+    public float baseCooldown = 5;
+    public float baseHealth = 100;
 
-    public int currentPower { get; private set; }
-    public int currentSpeed { get; private set; }
-    public int currentHealth { get; private set; }
-    public int maxHealth { get; private set; }
+    public float currentPower;
+    public float currentCooldown;
+    public float currentHealth;
+    public float maxHealth;
 
-    [Header("UI (optional)")]
-    public Text powerText;
-    public Text speedText;
-    public Text healthText;
 
     private void Awake()
     {
         currentPower = basePower;
-        currentSpeed = baseSpeed;
+        currentCooldown = baseCooldown;
         maxHealth = baseHealth;
         currentHealth = maxHealth;
-        UpdateUI();
     }
 
-    public void AddBonus(int bonusValue, int statNumber)
+    public void AddBonus(float bonusValue, float statNumber)
     {
         print("Add");
         switch (statNumber)
@@ -37,7 +32,7 @@ public class PlayerStats : MonoBehaviour
                 currentPower += bonusValue;
                 break;
             case 1:
-                currentSpeed += bonusValue;
+                currentCooldown -= bonusValue;
                 break;
             case 2:
                 maxHealth += bonusValue;
@@ -47,11 +42,9 @@ public class PlayerStats : MonoBehaviour
 
         if (currentHealth > maxHealth)
             currentHealth = maxHealth;
-
-        UpdateUI();
     }
 
-    public void RemoveBonus(int bonusValue, int statNumber)
+    public void RemoveBonus(float bonusValue, float statNumber)
     {
         print("Remove");
         switch (statNumber)
@@ -60,7 +53,7 @@ public class PlayerStats : MonoBehaviour
                 currentPower -= bonusValue;
                 break;
             case 1:
-                currentSpeed -= bonusValue;
+                currentCooldown += bonusValue;
                 break;
             case 2:
                 maxHealth -= bonusValue;
@@ -68,21 +61,12 @@ public class PlayerStats : MonoBehaviour
                     currentHealth = maxHealth;
                 break;
         }
-        UpdateUI();
     }
 
-    public void TakeDamage(int dmg)
+    public void TakeDamage(float dmg)
     {
         currentHealth -= dmg;
         if (currentHealth < 0)
             currentHealth = 0;
-        UpdateUI();
-    }
-
-    private void UpdateUI()
-    {
-        if (powerText != null) powerText.text = $"Power: {currentPower}";
-        if (speedText != null) speedText.text = $"Speed: {currentSpeed}";
-        if (healthText != null) healthText.text = $"Health: {currentHealth}/{maxHealth}";
     }
 }
