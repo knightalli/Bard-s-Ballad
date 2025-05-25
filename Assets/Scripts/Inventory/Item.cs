@@ -59,11 +59,21 @@ public class Item : MonoBehaviour
             return;
         }
 
-        _inventory = _player.GetComponent<Inventory>();
+        // Ищем InventoryCanvas
+        var inventoryCanvas = GameObject.Find("InventoryCanvas");
+        if (inventoryCanvas == null)
+        {
+            Debug.LogError("InventoryCanvas не найден на сцене!");
+            Destroy(gameObject);
+            return;
+        }
+
+        _inventory = inventoryCanvas.GetComponent<Inventory>();
         if (_inventory == null)
         {
-            _inventory = _player.gameObject.AddComponent<Inventory>();
-            Debug.Log("Inventory компонент был автоматически добавлен на игрока");
+            Debug.LogError("Inventory компонент не найден на InventoryCanvas!");
+            Destroy(gameObject);
+            return;
         }
     }
 
