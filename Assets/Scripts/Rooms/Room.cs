@@ -19,7 +19,14 @@ public class Room : MonoBehaviour
     public int minEnemies = 2;
     public int maxEnemies = 4;
 
+    [Header("Upgrade Spawn Settings")]
+    public Transform[] upgradeSpawnPoints;
+    public GameObject[] possibleUpgrades;
+    public int minUpgrades = 1;
+    public int maxUpgrades = 2;
+
     private List<GameObject> spawnedEnemies = new List<GameObject>();
+    private List<GameObject> spawnedUpgrades = new List<GameObject>();
     public bool isVisited = false;
     private bool isRoomCleared = false;
 
@@ -60,32 +67,73 @@ public class Room : MonoBehaviour
 
     private void LockDoors()
     {
-        // Активируем все визуальные двери
-        if (DoorU != null)
+        if (isStartRoom) return;
+
+        if (RoomMoverU != null && RoomMoverU.activeSelf)
         {
-            DoorU.GetComponent<Door>()?.Lock();
+            activeRoomMovers.Add(RoomMoverU);
+            RoomMoverU.SetActive(false);
+            if (DoorU != null)
+            {
+                activeDoors.Add(DoorU);
+                DoorU.SetActive(true);
+            }
         }
-        if (DoorD != null)
+
+        if (RoomMoverD != null && RoomMoverD.activeSelf)
         {
-            DoorD.GetComponent<Door>()?.Lock();
+            activeRoomMovers.Add(RoomMoverD);
+            RoomMoverD.SetActive(false);
+            if (DoorD != null)
+            {
+                activeDoors.Add(DoorD);
+                DoorD.SetActive(true);
+            }
         }
-        if (DoorL != null)
+
+        if (RoomMoverL != null && RoomMoverL.activeSelf)
         {
-            DoorL.GetComponent<Door>()?.Lock();
+            activeRoomMovers.Add(RoomMoverL);
+            RoomMoverL.SetActive(false);
+            if (DoorL != null)
+            {
+                activeDoors.Add(DoorL);
+                DoorL.SetActive(true);
+            }
         }
-        if (DoorR != null)
+
+        if (RoomMoverR != null && RoomMoverR.activeSelf)
         {
-            DoorR.GetComponent<Door>()?.Lock();
+            activeRoomMovers.Add(RoomMoverR);
+            RoomMoverR.SetActive(false);
+            if (DoorR != null)
+            {
+                activeDoors.Add(DoorR);
+                DoorR.SetActive(true);
+            }
         }
     }
 
     private void UnlockDoors()
     {
-        // Отключаем только те двери, которые были заблокированы
-        if (DoorU != null) DoorU.GetComponent<Door>()?.Unlock();
-        if (DoorD != null) DoorD.GetComponent<Door>()?.Unlock();
-        if (DoorL != null) DoorL.GetComponent<Door>()?.Unlock();
-        if (DoorR != null) DoorR.GetComponent<Door>()?.Unlock();
+        foreach (var roomMover in activeRoomMovers)
+        {
+            if (roomMover != null)
+            {
+                roomMover.SetActive(true);
+            }
+        }
+
+        foreach (var door in activeDoors)
+        {
+            if (door != null)
+            {
+                door.SetActive(false);
+            }
+        }
+
+        activeRoomMovers.Clear();
+        activeDoors.Clear();
     }
 
     private void SpawnEnemies()
@@ -109,6 +157,22 @@ public class Room : MonoBehaviour
         }
     }
 
+    private void SpawnUpgrades()
+    {
+        if (possibleUpgrades.Length > 0 && upgradeSpawnPoints.Length > 0)
+        {
+            int upgradeCount = Random.Range(minUpgrades, maxUpgrades + 1);
+            for (int i = 0; i < upgradeCount; i++)
+            {
+                Transform spawnPoint = upgradeSpawnPoints[Random.Range(0, upgradeSpawnPoints.Length)];
+                GameObject upgradePrefab = possibleUpgrades[Random.Range(0, possibleUpgrades.Length)];
+                GameObject upgrade = Instantiate(upgradePrefab, spawnPoint.position, Quaternion.identity);
+                upgrade.transform.parent = transform;
+                spawnedUpgrades.Add(upgrade);
+            }
+        }
+    }
+
     public void OnEnemyDeath(GameObject enemy)
     {
         spawnedEnemies.Remove(enemy);
@@ -117,6 +181,7 @@ public class Room : MonoBehaviour
         {
             isRoomCleared = true;
             UnlockDoors();
+            SpawnUpgrades();
         }
     }
 

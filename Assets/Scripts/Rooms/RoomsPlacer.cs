@@ -8,7 +8,7 @@ public class RoomsPlacer : MonoBehaviour
     public BossRoom[] BossRoomPrefabs;
     public Room StartingRoom;
 
-    private Room[,] spawnedRooms;
+    public Room[,] spawnedRooms;
     private int roomsToGenerate = 12;
     private int currentRoomCount = 0;
     private Vector2Int bossRoomPosition;
