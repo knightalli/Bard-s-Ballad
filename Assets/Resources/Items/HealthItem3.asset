@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HealthItem3
   m_EditorClassIdentifier: 
   itemName: TestItem3
-  icon: {fileID: 21300000, guid: e7d204373de90e2459e8ed0be233c913, type: 3}
+  icon: {fileID: 21300000, guid: d5ddc9f6b0b9f274eb45708cd3bd3edb, type: 3}
   bonusValue: 45
   statType: 2
   audioClips:

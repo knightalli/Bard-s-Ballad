@@ -1,3 +1,4 @@
+using UnityEditorInternal.VersionControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,13 +12,17 @@ public class StartSceneManager : MonoBehaviour
     [SerializeField] private Button _exitButton;
     [SerializeField] private Button _backSettingsButton;
     [SerializeField] private Button _backAuthorsButton;
+    [SerializeField] private Button _controlButton;
+    [SerializeField] private Button _backControlButton;
 
     [Header("Canvas")]
     [SerializeField] private GameObject _settingsCanvas;
     [SerializeField] private GameObject _authorsCanvas;
+    [SerializeField] private GameObject _controlCanvas;
 
     private bool _isSetting;
     private bool _isAuthor;
+    private bool _isControl;
 
     private void Awake()
     {
@@ -27,6 +32,9 @@ public class StartSceneManager : MonoBehaviour
         _exitButton.onClick.AddListener(OnExitClick);
         _backSettingsButton.onClick.AddListener(OnSettingsClick);
         _backAuthorsButton.onClick.AddListener(OnAuthorsClick);
+        _controlButton.onClick.AddListener(OnControlClick);
+        _backControlButton.onClick.AddListener(OnControlClick);
+
 
         _isSetting = false;
         _isAuthor = false;
@@ -60,6 +68,8 @@ public class StartSceneManager : MonoBehaviour
     {
         _authorsCanvas.SetActive(false);
         _settingsCanvas.SetActive(false);
+        _controlCanvas.SetActive(false);
+        _isControl = false;
         _isAuthor = false;
         _isSetting = false;
     }
@@ -107,6 +117,24 @@ public class StartSceneManager : MonoBehaviour
         {
             _authorsCanvas.SetActive(false);
             _isAuthor = false;
+        }
+    }
+
+    private void OnControlClick()
+    {
+        if (MusicManager.Instance != null)
+        {
+            MusicManager.Instance.PlayButtonClick();
+        }
+        if (!_isControl)
+        {
+            _controlCanvas.SetActive(true);
+            _isControl = true;
+        }
+        else if (_isControl)
+        {
+            _controlCanvas.SetActive(false);
+            _isControl = false;
         }
     }
 

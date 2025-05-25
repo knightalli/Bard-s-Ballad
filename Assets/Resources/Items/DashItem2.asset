@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DashItem2
   m_EditorClassIdentifier: 
   itemName: TestItem2
-  icon: {fileID: 21300000, guid: 8499ac3f713ef8840962d7464db16e05, type: 3}
+  icon: {fileID: 21300000, guid: 2995918d66019924ebb6bc0b676050ef, type: 3}
   bonusValue: 1
   statType: 1
   audioClips:

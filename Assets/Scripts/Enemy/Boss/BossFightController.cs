@@ -55,7 +55,7 @@ public class BossFightController : Enemy
     protected override void Update()
     {
         base.Update();
-        
+
         if (GetHealth() <= 0 && !IsStunned())
         {
             OnBossDefeated();
@@ -90,20 +90,15 @@ public class BossFightController : Enemy
 
         while (GetHealth() > 0 && !IsStunned())
         {
-            if (!phaseTwoStarted)
-            {
-                yield return StartCoroutine(Phase1_RicochetNotes());
-                yield return new WaitForSeconds(timeBetweenAttacks);
-                yield return StartCoroutine(Phase1_UltrasonicBlades());
-                yield return new WaitForSeconds(timeBetweenAttacks);
-            }
-            else
-            {
-                yield return StartCoroutine(Phase2_MeteorRain());
-                yield return new WaitForSeconds(timeBetweenAttacks);
-                yield return StartCoroutine(Phase2_DaggerVolley());
-                yield return new WaitForSeconds(timeBetweenAttacks);
-            }
+            yield return StartCoroutine(Phase1_RicochetNotes());
+            yield return new WaitForSeconds(timeBetweenAttacks);
+            yield return StartCoroutine(Phase1_UltrasonicBlades());
+            yield return new WaitForSeconds(timeBetweenAttacks);
+            yield return StartCoroutine(Phase2_MeteorRain());
+            yield return new WaitForSeconds(timeBetweenAttacks);
+            yield return StartCoroutine(Phase2_DaggerVolley());
+            yield return new WaitForSeconds(timeBetweenAttacks);
+
         }
 
         if (GetHealth() <= 0)

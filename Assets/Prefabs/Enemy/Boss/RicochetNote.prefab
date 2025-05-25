@@ -76,8 +76,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.6075471, g: 0.5759149, b: 0.25104305, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 05017caa9babe564fa96e3469e025660, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxBounces: 1
   bounceCooldown: 0.1
+  lifeTime: 5
   fireTrailPrefab: {fileID: 4775641650778552977, guid: 3d391b54d08262547a1f379160ba369f, type: 3}
   trailSpawnInterval: 0.3
   damageToPlayer: 10
-  lifeTime: 5

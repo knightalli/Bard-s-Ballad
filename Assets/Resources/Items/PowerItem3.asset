@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PowerItem3
   m_EditorClassIdentifier: 
   itemName: TestItem3
-  icon: {fileID: 21300000, guid: e7d204373de90e2459e8ed0be233c913, type: 3}
+  icon: {fileID: 21300000, guid: f2f48a718d0e83b48b1d72cda3d3ca50, type: 3}
   bonusValue: 10
   statType: 0
   audioClips:
