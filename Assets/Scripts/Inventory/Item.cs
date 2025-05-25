@@ -27,7 +27,6 @@ public class Item : MonoBehaviour
 
         if (database == null)
         {
-            Debug.LogError($"ItemDatabase не назначен для предмета {gameObject.name}!");
             Destroy(gameObject);
             return;
         }
@@ -37,7 +36,6 @@ public class Item : MonoBehaviour
 
         if (_available.Count == 0)
         {
-            Debug.LogWarning("No more items left in database");
             Destroy(gameObject);
             return;
         }
@@ -54,7 +52,6 @@ public class Item : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player")?.transform;
         if (_player == null)
         {
-            Debug.LogError("Player не найден на сцене!");
             Destroy(gameObject);
             return;
         }
@@ -63,7 +60,6 @@ public class Item : MonoBehaviour
         var inventoryCanvas = FindObjectOfType<Inventory>(true)?.gameObject;
         if (inventoryCanvas == null)
         {
-            Debug.LogError("InventoryCanvas не найден на сцене!");
             Destroy(gameObject);
             return;
         }
@@ -71,7 +67,6 @@ public class Item : MonoBehaviour
         _inventory = inventoryCanvas.GetComponent<Inventory>();
         if (_inventory == null)
         {
-            Debug.LogError("Inventory компонент не найден на InventoryCanvas!");
             Destroy(gameObject);
             return;
         }

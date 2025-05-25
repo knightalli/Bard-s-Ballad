@@ -15,7 +15,7 @@ public class BossFightController : Enemy
     [Header("Phase Timings")]
     [SerializeField] private float timeBetweenAttacks = 2f;
 
-    [Header("Phase 1 � Rock Storm")]
+    [Header("Phase 1 Rock Storm")]
     [SerializeField] private RicochetNote ricochetNotePrefab;
     [SerializeField] private float noteSpeed = 8f;
     [SerializeField] private float timeBetweenNotes = 0.4f;
@@ -23,7 +23,7 @@ public class BossFightController : Enemy
     [SerializeField] private UltrasonicBlade ultrasonicBladePrefab;
     [SerializeField] private float bladeSpeed = 10f;
 
-    [Header("Phase 2 � Apotheosis")]
+    [Header("Phase 2 Apotheosis")]
     [SerializeField] private Transform[] _meteorTargets;
     [SerializeField] private Meteor meteorPrefab;
 
@@ -34,6 +34,10 @@ public class BossFightController : Enemy
 
     private Transform player;
     private bool phaseTwoStarted = false;
+    private Coroutine attackCoroutine;
+    private Coroutine healthMonitorCoroutine;
+
+    public event System.Action BossDefeated;
 
     private void Awake()
     {
@@ -44,12 +48,40 @@ public class BossFightController : Enemy
     {
         base.Start();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        StartCoroutine(AttackRoutine());
+        healthMonitorCoroutine = StartCoroutine(MonitorHealth());
+        attackCoroutine = StartCoroutine(AttackRoutine());
     }
 
     protected override void Update()
     {
         base.Update();
+        
+        if (GetHealth() <= 0 && !IsStunned())
+        {
+            OnBossDefeated();
+        }
+    }
+
+    private IEnumerator MonitorHealth()
+    {
+        while (GetHealth() > 0)
+        {
+            if (!phaseTwoStarted && GetHealth() <= maxHealth / 2)
+            {
+                phaseTwoStarted = true;
+                if (attackCoroutine != null)
+                {
+                    StopCoroutine(attackCoroutine);
+                }
+                attackCoroutine = StartCoroutine(AttackRoutine());
+            }
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
     }
 
     private IEnumerator AttackRoutine()
@@ -58,34 +90,30 @@ public class BossFightController : Enemy
 
         while (GetHealth() > 0 && !IsStunned())
         {
-            if (!phaseTwoStarted && GetHealth() <= maxHealth / 2)
-            {
-                phaseTwoStarted = true;
-                yield return new WaitForSeconds(1f);
-            }
-
             if (!phaseTwoStarted)
             {
-                yield return Phase1_RicochetNotes();
+                yield return StartCoroutine(Phase1_RicochetNotes());
                 yield return new WaitForSeconds(timeBetweenAttacks);
-                yield return Phase1_UltrasonicBlades();
-                yield return new WaitForSeconds(timeBetweenAttacks);
-                yield return Phase2_MeteorRain();
-                yield return new WaitForSeconds(timeBetweenAttacks);
-                yield return Phase2_DaggerVolley();
+                yield return StartCoroutine(Phase1_UltrasonicBlades());
                 yield return new WaitForSeconds(timeBetweenAttacks);
             }
-            //else
-            //{
-            //    yield return Phase2_MeteorRain();
-            //    yield return new WaitForSeconds(timeBetweenAttacks);
-            //    yield return Phase2_DaggerVolley();
-            //    yield return new WaitForSeconds(timeBetweenAttacks);
-            //}
+            else
+            {
+                yield return StartCoroutine(Phase2_MeteorRain());
+                yield return new WaitForSeconds(timeBetweenAttacks);
+                yield return StartCoroutine(Phase2_DaggerVolley());
+                yield return new WaitForSeconds(timeBetweenAttacks);
+            }
         }
 
         if (GetHealth() <= 0)
+        {
+            if (healthMonitorCoroutine != null)
+            {
+                StopCoroutine(healthMonitorCoroutine);
+            }
             OnBossDefeated();
+        }
     }
 
     IEnumerator Phase1_RicochetNotes()
@@ -116,7 +144,6 @@ public class BossFightController : Enemy
             var rb = blade.GetComponent<Rigidbody2D>();
             rb.velocity = dir * bladeSpeed;
         }
-
         yield return null;
     }
 
@@ -125,7 +152,7 @@ public class BossFightController : Enemy
         for (int i = 0; i < _meteorTargets.Length; i++)
         {
             Transform target = _meteorTargets[i];
-            Vector3 meteorPos = new Vector3(target.position.x, target.position.y, target.position.z);
+            Vector3 meteorPos = new Vector3(target.position.x, target.position.y, 9.913028f);
 
             Instantiate(meteorPrefab, meteorPos, Quaternion.identity);
             yield return new WaitForSeconds(0.01f);
@@ -134,11 +161,10 @@ public class BossFightController : Enemy
 
     private IEnumerator Phase2_DaggerVolley()
     {
-        int volleys = 3; // три клинка за серию
+        int volleys = 3;
 
         for (int i = 0; i < volleys; i++)
         {
-            // Выбираем рандомную пару: spawn и target по одному индексу
             int idx = Random.Range(0, daggerSpawnPoints.Length);
 
             Vector2 spawnPos = daggerSpawnPoints[idx].position;
@@ -147,17 +173,37 @@ public class BossFightController : Enemy
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             var rot = Quaternion.Euler(0, 0, angle);
 
-            var dagger = Instantiate(daggerPrefab, spawnPos, rot);
+            Vector3 spawnPos3D = new Vector3(spawnPos.x, spawnPos.y, 9.913028f);
+
+            var dagger = Instantiate(daggerPrefab, spawnPos3D, rot);
             var rb = dagger.GetComponent<Rigidbody2D>();
             rb.velocity = dir * daggerSpeed;
 
-            yield return new WaitForSeconds(timeBetweenDaggers); // если нужно по очереди
+            yield return new WaitForSeconds(timeBetweenDaggers);
         }
     }
 
     private void OnBossDefeated()
     {
-        Debug.Log("Boss defeated!");
+        BossDefeated?.Invoke();
         Destroy(gameObject, 1f);
+    }
+
+    public override void Die()
+    {
+        BossDefeated?.Invoke();
+        base.Die();
+    }
+
+    private void OnDisable()
+    {
+        if (healthMonitorCoroutine != null)
+        {
+            StopCoroutine(healthMonitorCoroutine);
+        }
+        if (attackCoroutine != null)
+        {
+            StopCoroutine(attackCoroutine);
+        }
     }
 }

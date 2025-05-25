@@ -63,6 +63,12 @@ public class Room : MonoBehaviour
                 isRoomCleared = true;
             }
         }
+
+        // Отмечаем комнату как посещённую
+        if (!isVisited)
+        {
+            isVisited = true;
+        }
     }
 
     private void LockDoors()
@@ -163,7 +169,11 @@ public class Room : MonoBehaviour
                 Door doorComponent = door.GetComponent<Door>();
                 if (doorComponent != null)
                 {
-                    doorComponent.Unlock();
+                    // Открываем дверь только если она была заблокирована и не ведёт к боссу
+                    if (doorComponent.wasLocked && !doorComponent.toBoss)
+                    {
+                        doorComponent.Unlock();
+                    }
                 }
                 else
                 {
@@ -216,12 +226,139 @@ public class Room : MonoBehaviour
     public void OnEnemyDeath(GameObject enemy)
     {
         spawnedEnemies.Remove(enemy);
-        
-        if (spawnedEnemies.Count == 0)
+
+        if (spawnedEnemies.Count == 0 && !isRoomCleared)
         {
             isRoomCleared = true;
             UnlockDoors();
             SpawnUpgrades();
+
+            // Проверяем количество посещённых комнат
+            if (RoomManager.Instance != null)
+            {
+                int visitedRooms = 0;
+                foreach (var room in FindObjectsOfType<Room>())
+                {
+                    if (room.isVisited && !(room is BossRoom))
+                    {
+                        visitedRooms++;
+                    }
+                }
+
+                // Если посещено 11 комнат, открываем дверь к боссу
+                if (RoomManager.Instance.IsLastRoomRemaining(visitedRooms))
+                {
+                    Debug.Log("Все комнаты посещены, пытаемся открыть дверь к боссу");
+                    
+                    // Находим комнату босса
+                    var bossRoom = FindObjectOfType<BossRoom>();
+                    if (bossRoom != null)
+                    {
+                        Debug.Log($"Найдена комната босса, направление входа: {bossRoom.entranceDirection}");
+                        
+                        // Находим комнату, которая прилегает к боссу
+                        var rooms = FindObjectsOfType<Room>();
+                        foreach (var room in rooms)
+                        {
+                            // Пропускаем все комнаты босса
+                            if (room is BossRoom) continue;
+
+                            // Проверяем, является ли комната соседней
+                            Vector3 roomPosition = room.transform.position;
+                            Vector3 bossPosition = bossRoom.transform.position;
+                            bool isAdjacent = false;
+
+                            if (bossRoom.entranceDirection == "up" && Mathf.Approximately(roomPosition.y, bossPosition.y + 22))
+                            {
+                                isAdjacent = true;
+                            }
+                            else if (bossRoom.entranceDirection == "down" && Mathf.Approximately(roomPosition.y, bossPosition.y - 22))
+                            {
+                                isAdjacent = true;
+                            }
+                            else if (bossRoom.entranceDirection == "left" && Mathf.Approximately(roomPosition.x, bossPosition.x - 22))
+                            {
+                                isAdjacent = true;
+                            }
+                            else if (bossRoom.entranceDirection == "right" && Mathf.Approximately(roomPosition.x, bossPosition.x + 22))
+                            {
+                                isAdjacent = true;
+                            }
+
+                            if (isAdjacent)
+                            {
+                                Debug.Log($"Нашли соседнюю комнату {room.name} на позиции {roomPosition}");
+
+                                // Открываем дверь, которая ведёт к боссу
+                                if (bossRoom.entranceDirection == "up" && room.DoorD != null)
+                                {
+                                    Debug.Log($"Открываем дверь вниз в комнате {room.name}");
+                                    var door = room.DoorD.GetComponent<Door>();
+                                    if (door != null)
+                                    {
+                                        door.isLocked = false;
+                                        door.gameObject.SetActive(false);
+                                    }
+                                    else
+                                    {
+                                        room.DoorD.SetActive(false);
+                                    }
+                                    break;
+                                }
+                                else if (bossRoom.entranceDirection == "down" && room.DoorU != null)
+                                {
+                                    Debug.Log($"Открываем дверь вверх в комнате {room.name}");
+                                    var door = room.DoorU.GetComponent<Door>();
+                                    if (door != null)
+                                    {
+                                        door.isLocked = false;
+                                        door.gameObject.SetActive(false);
+                                    }
+                                    else
+                                    {
+                                        room.DoorU.SetActive(false);
+                                    }
+                                    break;
+                                }
+                                else if (bossRoom.entranceDirection == "left" && room.DoorR != null)
+                                {
+                                    Debug.Log($"Открываем дверь вправо в комнате {room.name}");
+                                    var door = room.DoorR.GetComponent<Door>();
+                                    if (door != null)
+                                    {
+                                        door.isLocked = false;
+                                        door.gameObject.SetActive(false);
+                                    }
+                                    else
+                                    {
+                                        room.DoorR.SetActive(false);
+                                    }
+                                    break;
+                                }
+                                else if (bossRoom.entranceDirection == "right" && room.DoorL != null)
+                                {
+                                    Debug.Log($"Открываем дверь влево в комнате {room.name}");
+                                    var door = room.DoorL.GetComponent<Door>();
+                                    if (door != null)
+                                    {
+                                        door.isLocked = false;
+                                        door.gameObject.SetActive(false);
+                                    }
+                                    else
+                                    {
+                                        room.DoorL.SetActive(false);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError("Не найдена комната босса!");
+                    }
+                }
+            }
         }
     }
 

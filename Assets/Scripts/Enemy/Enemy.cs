@@ -42,9 +42,9 @@ public class Enemy : MonoBehaviour
         }       
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
-        print(" " + damage + "  " + _health);
+        print(damage + "  " + _health);
         _health -= damage;
 
         _stunTimer = _stunDuration;
@@ -74,7 +74,7 @@ public class Enemy : MonoBehaviour
         currentRoom = room;
     }
 
-    public void Die()
+    public virtual void Die()
     {
         if (currentRoom != null)
         {

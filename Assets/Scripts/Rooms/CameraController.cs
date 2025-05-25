@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float orthographicSize = 6f;
 
-    public void AddLimits(float leftChange, float rightChange, float bottomChange, float upperChange)
+        public void AddLimits(float leftChange, float rightChange, float bottomChange, float upperChange)
     {
         leftLimit += leftChange;
         rightLimit += rightChange;

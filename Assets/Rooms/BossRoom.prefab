@@ -41,7 +41,6 @@ Transform:
   - {fileID: 528679773583419783}
   - {fileID: 4891049368203542983}
   - {fileID: 1374352454678641428}
-  - {fileID: 5680898562685659953}
   - {fileID: 1774109530807878228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -97,16 +96,18 @@ MonoBehaviour:
   RoomMoverR: {fileID: 1554648458588561739}
   enemySpawnPoints: []
   possibleEnemies: []
-  minEnemies: 2
-  maxEnemies: 4
+  minEnemies: 0
+  maxEnemies: 0
   upgradeSpawnPoints: []
   possibleUpgrades: []
-  minUpgrades: 1
-  maxUpgrades: 2
+  minUpgrades: 0
+  maxUpgrades: 0
   isVisited: 0
   isStartRoom: 0
   isBossRoom: 1
   entranceDirection: 
+  bossPrefab: {fileID: 6176857140344395276, guid: ced97246f8c6776489fd403521e3b02d, type: 3}
+  bossSpawnPoint: {fileID: 1774109530807878228}
 --- !u!1 &644623642945269471
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,7 +1722,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1774109530807878228}
   m_Layer: 0
-  m_Name: EnemySpawn
+  m_Name: BossSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -1737,37 +1738,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 9.913028}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7393204922040509690}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2838718725668325466
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5680898562685659953}
-  m_Layer: 0
-  m_Name: Mobs
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5680898562685659953
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2838718725668325466}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1.4327819}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

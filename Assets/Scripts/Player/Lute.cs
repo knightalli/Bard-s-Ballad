@@ -12,8 +12,7 @@ public class Lute : MonoBehaviour
     [SerializeField] private LayerMask _whatIsSolid;
     [SerializeField] private int _kickBaseDamage;
     [SerializeField] private PlayerStats _playerStats;
-    [SerializeField] private AudioSource[] _audioSources; // <-- три AudioSource через инспектор
-    [SerializeField] private AudioClip[] _defaultShotClips;
+    [SerializeField] private AudioSource[] _audioSources;
     [SerializeField] private LuteSoundController _soundController;
     private float _timeBtwShots;
     private float _timeBtwKicks;
@@ -25,9 +24,6 @@ public class Lute : MonoBehaviour
         _inventoryController = FindObjectOfType<InventoryController>();
         if (_soundController == null)
             _soundController = GetComponent<LuteSoundController>();
-
-        if (_defaultShotClips == null || _defaultShotClips.Length == 0)
-            Debug.LogWarning("Не назначены звуковые клипы выстрелов на Lute", this);
 
         // Проверка, что все три источника назначены
         if (_audioSources == null || _audioSources.Length < 3)
@@ -56,26 +52,10 @@ public class Lute : MonoBehaviour
                 bullet.Setup(_playerStats.currentPower);
 
                 // --- Звуки ---
-                AudioClip[] clipsToPlay = null;
                 if (_soundController != null)
-                    clipsToPlay = _soundController.GetNextSounds();
-
-                if (_audioSources != null && _audioSources.Length >= 1)
                 {
-                    if (clipsToPlay == null && _defaultShotClips != null && _defaultShotClips.Length > 0)
-                    {
-                        // По одному рандомному клипу на каждый источник
-                        for (int i = 0; i < _audioSources.Length; i++)
-                        {
-                            var src = _audioSources[i];
-                            if (src != null && Time.time - _lastSoundTime >= _baseTimeBtwShots)
-                            {
-                                src.PlayOneShot(_defaultShotClips[Random.Range(0, _defaultShotClips.Length)]);
-                            }
-                        }
-                        _lastSoundTime = Time.time;
-                    }
-                    else if (clipsToPlay != null)
+                    AudioClip[] clipsToPlay = _soundController.GetNextSounds();
+                    if (clipsToPlay != null && _audioSources != null && _audioSources.Length >= 1)
                     {
                         for (int i = 0; i < _audioSources.Length && i < clipsToPlay.Length; i++)
                         {

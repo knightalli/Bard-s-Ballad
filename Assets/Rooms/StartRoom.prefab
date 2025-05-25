@@ -70,7 +70,7 @@ MonoBehaviour:
   possibleUpgrades: []
   minUpgrades: 0
   maxUpgrades: 0
-  isVisited: 0
+  isVisited: 1
   isStartRoom: 0
 --- !u!1 &644623642945269471
 GameObject:

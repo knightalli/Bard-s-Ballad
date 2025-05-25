@@ -19,15 +19,6 @@ public class Minimap : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("Minimap: Start");
-        
-        // Проверяем префабы
-        if (roomIconPrefab == null) Debug.LogError("Minimap: roomIconPrefab не назначен!");
-        if (currentRoomIconPrefab == null) Debug.LogError("Minimap: currentRoomIconPrefab не назначен!");
-        if (bossRoomIconPrefab == null) Debug.LogError("Minimap: bossRoomIconPrefab не назначен!");
-        if (startRoomIconPrefab == null) Debug.LogError("Minimap: startRoomIconPrefab не назначен!");
-        if (visitedRoomIconPrefab == null) Debug.LogError("Minimap: visitedRoomIconPrefab не назначен!");
-
         // Настраиваем RectTransform контейнера миникарты
         RectTransform rectTransform = GetComponent<RectTransform>();
         if (rectTransform != null)
@@ -42,19 +33,17 @@ public class Minimap : MonoBehaviour
             
             // Устанавливаем размер
             rectTransform.sizeDelta = new Vector2(300, 300);
-            
-            Debug.Log($"Minimap: Настроен RectTransform, позиция: {rectTransform.anchoredPosition}, размер: {rectTransform.sizeDelta}");
         }
         else
         {
-            Debug.LogError("Minimap: Не найден компонент RectTransform!");
+
         }
 
         // Находим существующий контейнер для иконок
         contentRect = transform.Find("MinimapContent")?.GetComponent<RectTransform>();
         if (contentRect == null)
         {
-            Debug.LogError("Minimap: Не найден MinimapContent!");
+
             return;
         }
 
@@ -64,11 +53,11 @@ public class Minimap : MonoBehaviour
         {
             // Подписываемся на событие создания комнаты
             roomsPlacer.OnRoomCreated += AddRoomToMinimap;
-            Debug.Log("Minimap: Подписался на события RoomsPlacer");
+
         }
         else
         {
-            Debug.LogError("Minimap: RoomsPlacer не найден!");
+
         }
     }
 
@@ -90,7 +79,6 @@ public class Minimap : MonoBehaviour
             Mathf.RoundToInt(room.transform.position.x / 22),
             Mathf.RoundToInt(room.transform.position.y / 22)
         );
-        Debug.Log($"Minimap: Добавлена комната {room.name} в позиции: {roomPos}, реальная позиция: {room.transform.position}, isStartRoom: {room.isStartRoom}, уже есть иконка: {roomIcons.ContainsKey(roomPos)}");
 
         // Сохраняем комнату
         rooms[roomPos] = room;
@@ -99,16 +87,14 @@ public class Minimap : MonoBehaviour
         if (room.isStartRoom)
         {
             startRoomPosition = roomPos;
-            Debug.Log($"Minimap: Обработка стартовой комнаты, позиция: {roomPos}, startRoomIconPrefab: {(startRoomIconPrefab != null ? "назначен" : "не назначен")}");
             // Создаем иконку стартовой комнаты только один раз
             if (!roomIcons.ContainsKey(roomPos))
             {
                 CreateRoomIcon(roomPos, startRoomIconPrefab);
-                Debug.Log($"Minimap: Создана иконка стартовой комнаты в позиции {roomPos}");
             }
             else
             {
-                Debug.Log($"Minimap: Иконка стартовой комнаты уже существует в позиции {roomPos}");
+
             }
             // Устанавливаем как текущую комнату
             UpdateCurrentRoom(roomPos);
@@ -117,28 +103,23 @@ public class Minimap : MonoBehaviour
         {
             bossRoomPosition = roomPos;
             CreateRoomIcon(roomPos, bossRoomIconPrefab);
-            Debug.Log($"Minimap: Создана иконка комнаты босса в позиции {roomPos}");
         }
         else
         {
             CreateRoomIcon(roomPos, roomIconPrefab);
-            Debug.Log($"Minimap: Создана иконка обычной комнаты в позиции {roomPos}");
         }
 
-        Debug.Log($"Minimap: Всего иконок: {roomIcons.Count}");
     }
 
     private void CreateRoomIcon(Vector2Int position, GameObject iconPrefab)
     {
         if (iconPrefab == null)
         {
-            Debug.LogError($"Minimap: Префаб иконки не назначен для позиции {position}");
             return;
         }
 
         if (contentRect == null)
         {
-            Debug.LogError("Minimap: contentRect не назначен!");
             return;
         }
 
@@ -148,7 +129,6 @@ public class Minimap : MonoBehaviour
         
         if (iconRect == null)
         {
-            Debug.LogError($"Minimap: У иконки нет компонента RectTransform!");
             return;
         }
 
@@ -156,7 +136,6 @@ public class Minimap : MonoBehaviour
         float x = position.x * 30;
         float y = position.y * 30;
         iconRect.anchoredPosition = new Vector2(x, y);
-        Debug.Log($"Minimap: Создана иконка в позиции {position}, anchoredPosition: {iconRect.anchoredPosition}");
 
         // Сохраняем иконку
         roomIcons[position] = icon;
