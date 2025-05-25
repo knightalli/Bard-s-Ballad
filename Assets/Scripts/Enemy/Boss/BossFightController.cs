@@ -9,6 +9,8 @@ public class BossFightController : Enemy
     [SerializeField] private Transform[] _ricochetTargetPoint;
     [SerializeField] private Transform[] bladeSpawnPoints;
     [SerializeField] private Transform[] bladeTargetPoints;
+    [SerializeField] private Transform[] daggerSpawnPoints;
+    [SerializeField] private Transform[] daggerTargetPoints;
 
     [Header("Phase Timings")]
     [SerializeField] private float timeBetweenAttacks = 2f;
@@ -132,15 +134,24 @@ public class BossFightController : Enemy
 
     private IEnumerator Phase2_DaggerVolley()
     {
-        for (int i = 0; i < daggersPerVolley; i++)
+        int volleys = 3; // три клинка за серию
+
+        for (int i = 0; i < volleys; i++)
         {
-            Vector2 dir = (player.position - transform.position).normalized;
+            // Выбираем рандомную пару: spawn и target по одному индексу
+            int idx = Random.Range(0, daggerSpawnPoints.Length);
+
+            Vector2 spawnPos = daggerSpawnPoints[idx].position;
+            Vector2 targetPos = daggerTargetPoints[idx].position;
+            Vector2 dir = (targetPos - spawnPos).normalized;
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             var rot = Quaternion.Euler(0, 0, angle);
-            var dagger = Instantiate(daggerPrefab, transform.position, rot);
+
+            var dagger = Instantiate(daggerPrefab, spawnPos, rot);
             var rb = dagger.GetComponent<Rigidbody2D>();
             rb.velocity = dir * daggerSpeed;
-            yield return new WaitForSeconds(timeBetweenDaggers);
+
+            yield return new WaitForSeconds(timeBetweenDaggers); // если нужно по очереди
         }
     }
 
