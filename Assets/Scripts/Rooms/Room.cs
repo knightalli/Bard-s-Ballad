@@ -76,7 +76,15 @@ public class Room : MonoBehaviour
             if (DoorU != null)
             {
                 activeDoors.Add(DoorU);
-                DoorU.SetActive(true);
+                Door door = DoorU.GetComponent<Door>();
+                if (door != null)
+                {
+                    door.Lock();
+                }
+                else
+                {
+                    DoorU.SetActive(true);
+                }
             }
         }
 
@@ -87,7 +95,15 @@ public class Room : MonoBehaviour
             if (DoorD != null)
             {
                 activeDoors.Add(DoorD);
-                DoorD.SetActive(true);
+                Door door = DoorD.GetComponent<Door>();
+                if (door != null)
+                {
+                    door.Lock();
+                }
+                else
+                {
+                    DoorD.SetActive(true);
+                }
             }
         }
 
@@ -98,7 +114,15 @@ public class Room : MonoBehaviour
             if (DoorL != null)
             {
                 activeDoors.Add(DoorL);
-                DoorL.SetActive(true);
+                Door door = DoorL.GetComponent<Door>();
+                if (door != null)
+                {
+                    door.Lock();
+                }
+                else
+                {
+                    DoorL.SetActive(true);
+                }
             }
         }
 
@@ -109,7 +133,15 @@ public class Room : MonoBehaviour
             if (DoorR != null)
             {
                 activeDoors.Add(DoorR);
-                DoorR.SetActive(true);
+                Door door = DoorR.GetComponent<Door>();
+                if (door != null)
+                {
+                    door.Lock();
+                }
+                else
+                {
+                    DoorR.SetActive(true);
+                }
             }
         }
     }
@@ -128,7 +160,15 @@ public class Room : MonoBehaviour
         {
             if (door != null)
             {
-                door.SetActive(false);
+                Door doorComponent = door.GetComponent<Door>();
+                if (doorComponent != null)
+                {
+                    doorComponent.Unlock();
+                }
+                else
+                {
+                    door.SetActive(false);
+                }
             }
         }
 

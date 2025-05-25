@@ -8,7 +8,6 @@ public class Bandit : Enemy
     [SerializeField] private int _customHealth;
     [SerializeField] private float _startTimeBtwAttack;
     [SerializeField] private Transform _enemyAttackPoint;
-    [SerializeField] private float _enemyAttackRange = 1f;
     [SerializeField] private int _customDamage;
     [SerializeField] private LayerMask _whatIsPlayer;
     [SerializeField] private GameObject _enemyBulletPrefab;

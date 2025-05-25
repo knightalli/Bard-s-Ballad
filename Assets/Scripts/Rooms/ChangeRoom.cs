@@ -15,6 +15,7 @@ public class ChangeRoom : MonoBehaviour
 
     private Room currentRoom;
     private Room nextRoom;
+    private Minimap minimap;
 
     void Start()
     {
@@ -29,6 +30,7 @@ public class ChangeRoom : MonoBehaviour
         }
 
         currentRoom = transform.parent.GetComponent<Room>();
+        minimap = FindObjectOfType<Minimap>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -55,6 +57,16 @@ public class ChangeRoom : MonoBehaviour
             {
                 nextRoom.isVisited = true;
                 nextRoom.OnRoomEnter();
+            }
+
+            // Обновляем миникарту
+            if (minimap != null)
+            {
+                Vector2Int roomPosition = new Vector2Int(
+                    Mathf.RoundToInt(nextRoom.transform.position.x / 24),
+                    Mathf.RoundToInt(nextRoom.transform.position.y / 24)
+                );
+                minimap.UpdateCurrentRoom(roomPosition);
             }
         }
     }
