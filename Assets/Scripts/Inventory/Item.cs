@@ -59,8 +59,8 @@ public class Item : MonoBehaviour
             return;
         }
 
-        // Ищем InventoryCanvas
-        var inventoryCanvas = GameObject.Find("InventoryCanvas");
+        // Ищем InventoryCanvas, даже если он неактивен
+        var inventoryCanvas = FindObjectOfType<Inventory>(true)?.gameObject;
         if (inventoryCanvas == null)
         {
             Debug.LogError("InventoryCanvas не найден на сцене!");
