@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
 
 public class RoomsPlacer : MonoBehaviour
 {
     public Room[] RoomPrefabs;
     public BossRoom[] BossRoomPrefabs;
     public Room StartingRoom;
+
+    public event Action<Room> OnRoomCreated;
 
     public Room[,] spawnedRooms;
     private int roomsToGenerate = 12;
@@ -17,7 +20,10 @@ public class RoomsPlacer : MonoBehaviour
     {
         spawnedRooms = new Room[11,11];
         spawnedRooms[5,5] = StartingRoom;
+        StartingRoom.isStartRoom = true;
+        StartingRoom.transform.position = new Vector3(0, 0, 2);
         currentRoomCount = 1;
+        OnRoomCreated?.Invoke(StartingRoom);
 
         // Генерируем обычные комнаты
         for (int i = 0; i < roomsToGenerate - 2; i++) // -2 потому что одна комната уже есть (стартовая) и одна будет боссом
@@ -51,14 +57,15 @@ public class RoomsPlacer : MonoBehaviour
         if (vacantPlaces.Count == 0) return;
 
         // Выбираем случайное свободное место
-        Vector2Int bossPosition = vacantPlaces.ElementAt(Random.Range(0, vacantPlaces.Count));
+        Vector2Int bossPosition = vacantPlaces.ElementAt(UnityEngine.Random.Range(0, vacantPlaces.Count));
         
         // Создаем комнату босса
-        BossRoom bossRoom = Instantiate(BossRoomPrefabs[Random.Range(0, BossRoomPrefabs.Length)]);
+        BossRoom bossRoom = Instantiate(BossRoomPrefabs[UnityEngine.Random.Range(0, BossRoomPrefabs.Length)]);
         
         // Размещаем комнату
         bossRoom.transform.position = new Vector3(bossPosition.x - 5, bossPosition.y - 5, 0) * 22;
         spawnedRooms[bossPosition.x, bossPosition.y] = bossRoom;
+        OnRoomCreated?.Invoke(bossRoom);
         
         // Сохраняем позицию комнаты босса
         bossRoomPosition = bossPosition;
@@ -159,12 +166,12 @@ public class RoomsPlacer : MonoBehaviour
             }
         }
 
-        Room newRoom = Instantiate(RoomPrefabs[Random.Range(0, RoomPrefabs.Length)]);
+        Room newRoom = Instantiate(RoomPrefabs[UnityEngine.Random.Range(0, RoomPrefabs.Length)]);
 
         int limit = 500;
         while (limit-- > 0)
         {
-            Vector2Int position = vacantPlaces.ElementAt(Random.Range(0, vacantPlaces.Count));
+            Vector2Int position = vacantPlaces.ElementAt(UnityEngine.Random.Range(0, vacantPlaces.Count));
             newRoom.RotateRandomly();
 
             if (ConnectToSomething(newRoom, position))
@@ -172,6 +179,7 @@ public class RoomsPlacer : MonoBehaviour
                 newRoom.transform.position = new Vector3(position.x - 5, position.y - 5, 0) * 22;
                 spawnedRooms[position.x, position.y] = newRoom;
                 currentRoomCount++;
+                OnRoomCreated?.Invoke(newRoom);
                 break;
             }
         }       
@@ -191,7 +199,7 @@ public class RoomsPlacer : MonoBehaviour
 
         if (neighbours.Count == 0) return false;
 
-        Vector2Int selectedDirection = neighbours[Random.Range(0, neighbours.Count)];
+        Vector2Int selectedDirection = neighbours[UnityEngine.Random.Range(0, neighbours.Count)];
         Room selectedRoom = spawnedRooms[p.x + selectedDirection.x, p.y + selectedDirection.y];
 
         if (selectedDirection == Vector2Int.up)

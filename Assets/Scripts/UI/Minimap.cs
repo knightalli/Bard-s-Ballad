@@ -1,251 +1,213 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Minimap : MonoBehaviour
 {
-    [SerializeField] private GameObject roomIconPrefab;
-    [SerializeField] private GameObject currentRoomIconPrefab;
-    [SerializeField] private GameObject bossRoomIconPrefab;
-    [SerializeField] private GameObject startRoomIconPrefab;
-    [SerializeField] private Transform minimapContent;
-    [SerializeField] private float iconSize = 50f;
-    [SerializeField] private float spacing = 10f;
-    [SerializeField] private Vector2 minimapOffset = new Vector2(-20f, -20f);
-    [SerializeField] private Vector2 minimapSize = new Vector2(400f, 400f);
+    public GameObject roomIconPrefab;
+    public GameObject currentRoomIconPrefab;
+    public GameObject bossRoomIconPrefab;
+    public GameObject startRoomIconPrefab;
+    public GameObject visitedRoomIconPrefab;
 
-    private RoomsPlacer roomsPlacer;
-    private GameObject[,] roomIcons;
-    private GameObject currentRoomIcon;
-    private bool isInitialized = false;
-    private Canvas minimapCanvas;
+    private Dictionary<Vector2Int, GameObject> roomIcons = new Dictionary<Vector2Int, GameObject>();
+    private Dictionary<Vector2Int, Room> rooms = new Dictionary<Vector2Int, Room>();
+    private Vector2Int currentRoomPosition;
+    private Vector2Int bossRoomPosition;
+    private Vector2Int startRoomPosition;
+    private RectTransform contentRect;
 
-    void Start()
+    private void Start()
     {
         Debug.Log("Minimap: Start");
         
         // Проверяем префабы
-        Debug.Log($"Minimap: Проверка префабов:");
-        Debug.Log($"roomIconPrefab: {(roomIconPrefab != null ? "назначен" : "не назначен")}");
-        Debug.Log($"currentRoomIconPrefab: {(currentRoomIconPrefab != null ? "назначен" : "не назначен")}");
-        Debug.Log($"bossRoomIconPrefab: {(bossRoomIconPrefab != null ? "назначен" : "не назначен")}");
-        Debug.Log($"startRoomIconPrefab: {(startRoomIconPrefab != null ? "назначен" : "не назначен")}");
-
         if (roomIconPrefab == null) Debug.LogError("Minimap: roomIconPrefab не назначен!");
         if (currentRoomIconPrefab == null) Debug.LogError("Minimap: currentRoomIconPrefab не назначен!");
         if (bossRoomIconPrefab == null) Debug.LogError("Minimap: bossRoomIconPrefab не назначен!");
         if (startRoomIconPrefab == null) Debug.LogError("Minimap: startRoomIconPrefab не назначен!");
+        if (visitedRoomIconPrefab == null) Debug.LogError("Minimap: visitedRoomIconPrefab не назначен!");
 
-        // Создаем Canvas если его нет
-        if (minimapContent == null)
+        // Настраиваем RectTransform контейнера миникарты
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        if (rectTransform != null)
         {
-            Debug.Log("Minimap: Создаем новый Canvas для миникарты");
+            // Устанавливаем якоря в правый верхний угол
+            rectTransform.anchorMin = new Vector2(1, 1);
+            rectTransform.anchorMax = new Vector2(1, 1);
+            rectTransform.pivot = new Vector2(1, 1);
             
-            // Создаем Canvas
-            GameObject canvasObj = new GameObject("MinimapCanvas");
-            minimapCanvas = canvasObj.AddComponent<Canvas>();
-            minimapCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            minimapCanvas.sortingOrder = 100;
+            // Устанавливаем позицию (отступ от края экрана)
+            rectTransform.anchoredPosition = new Vector2(-20, -20);
             
-            // Добавляем CanvasScaler
-            CanvasScaler scaler = canvasObj.AddComponent<CanvasScaler>();
-            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            scaler.referenceResolution = new Vector2(1920, 1080);
-            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-            scaler.matchWidthOrHeight = 0.5f;
+            // Устанавливаем размер
+            rectTransform.sizeDelta = new Vector2(300, 300);
             
-            // Добавляем GraphicRaycaster
-            canvasObj.AddComponent<GraphicRaycaster>();
-            
-            // Создаем контейнер для иконок
-            GameObject contentObj = new GameObject("MinimapContent");
-            contentObj.transform.SetParent(canvasObj.transform, false);
-            minimapContent = contentObj.transform;
-            
-            // Настраиваем RectTransform для контейнера
-            RectTransform contentRect = contentObj.AddComponent<RectTransform>();
-            contentRect.anchorMin = new Vector2(1, 1);
-            contentRect.anchorMax = new Vector2(1, 1);
-            contentRect.pivot = new Vector2(1, 1);
-            contentRect.anchoredPosition = minimapOffset;
-            contentRect.sizeDelta = minimapSize;
-            
-            // Создаем фон для миникарты
-            GameObject backgroundObj = new GameObject("MinimapBackground");
-            backgroundObj.transform.SetParent(canvasObj.transform, false);
-            Image backgroundImage = backgroundObj.AddComponent<Image>();
-            backgroundImage.color = new Color(0, 0, 0, 0.5f);
-            
-            // Настраиваем RectTransform для фона
-            RectTransform backgroundRect = backgroundObj.GetComponent<RectTransform>();
-            backgroundRect.anchorMin = new Vector2(1, 1);
-            backgroundRect.anchorMax = new Vector2(1, 1);
-            backgroundRect.pivot = new Vector2(1, 1);
-            backgroundRect.anchoredPosition = minimapOffset;
-            backgroundRect.sizeDelta = minimapSize;
-            
-            Debug.Log($"Minimap: Canvas и контейнер созданы, размер: {minimapSize}");
+            Debug.Log($"Minimap: Настроен RectTransform, позиция: {rectTransform.anchoredPosition}, размер: {rectTransform.sizeDelta}");
         }
         else
         {
-            // Настраиваем существующий RectTransform
-            RectTransform contentRect = minimapContent as RectTransform;
-            if (contentRect != null)
-            {
-                contentRect.anchorMin = new Vector2(1, 1);
-                contentRect.anchorMax = new Vector2(1, 1);
-                contentRect.pivot = new Vector2(1, 1);
-                contentRect.anchoredPosition = minimapOffset;
-                contentRect.sizeDelta = minimapSize;
-                Debug.Log($"Minimap: Настроен RectTransform для minimapContent, размер: {contentRect.sizeDelta}, позиция: {contentRect.anchoredPosition}");
-            }
+            Debug.LogError("Minimap: Не найден компонент RectTransform!");
         }
 
-        Debug.Log("Minimap: Ищем RoomsPlacer...");
-        roomsPlacer = FindObjectOfType<RoomsPlacer>();
-        if (roomsPlacer == null)
+        // Находим существующий контейнер для иконок
+        contentRect = transform.Find("MinimapContent")?.GetComponent<RectTransform>();
+        if (contentRect == null)
         {
-            Debug.LogError("Minimap: RoomsPlacer не найден на сцене!");
-            return;
-        }
-        Debug.Log("Minimap: RoomsPlacer найден!");
-    }
-
-    void Update()
-    {
-        if (!isInitialized)
-        {
-            if (roomsPlacer != null && roomsPlacer.spawnedRooms != null)
-            {
-                InitializeMinimap();
-                isInitialized = true;
-            }
+            Debug.LogError("Minimap: Не найден MinimapContent!");
             return;
         }
 
-        // Находим текущую комнату игрока
-        var player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null) return;
-
-        // Ищем комнату, в которой находится игрок
-        for (int x = 0; x < roomsPlacer.spawnedRooms.GetLength(0); x++)
+        // Находим RoomsPlacer
+        RoomsPlacer roomsPlacer = FindObjectOfType<RoomsPlacer>();
+        if (roomsPlacer != null)
         {
-            for (int y = 0; y < roomsPlacer.spawnedRooms.GetLength(1); y++)
-            {
-                if (roomsPlacer.spawnedRooms[x, y] != null)
-                {
-                    // Проверяем, находится ли игрок в этой комнате
-                    if (roomsPlacer.spawnedRooms[x, y].GetComponent<BoxCollider2D>().bounds.Contains(player.transform.position))
-                    {
-                        // Обновляем позицию иконки текущей комнаты
-                        Vector2 newPos = new Vector2(
-                            (x - 5) * (iconSize + spacing),
-                            (y - 5) * (iconSize + spacing)
-                        );
-                        RectTransform currentIconRect = currentRoomIcon.GetComponent<RectTransform>();
-                        if (currentIconRect != null)
-                        {
-                            currentIconRect.anchoredPosition = newPos;
-                            Debug.Log($"Minimap: Обновлена позиция текущей комнаты: {newPos}");
-                        }
-                        return;
-                    }
-                }
-            }
+            // Подписываемся на событие создания комнаты
+            roomsPlacer.OnRoomCreated += AddRoomToMinimap;
+            Debug.Log("Minimap: Подписался на события RoomsPlacer");
+        }
+        else
+        {
+            Debug.LogError("Minimap: RoomsPlacer не найден!");
         }
     }
 
-    private void InitializeMinimap()
+    private void OnDestroy()
     {
-        Debug.Log($"Minimap: Инициализация миникарты, размер массива комнат: {roomsPlacer.spawnedRooms.GetLength(0)}x{roomsPlacer.spawnedRooms.GetLength(1)}");
-
-        roomIcons = new GameObject[roomsPlacer.spawnedRooms.GetLength(0), roomsPlacer.spawnedRooms.GetLength(1)];
-
-        // Создаем иконки для каждой комнаты
-        for (int x = 0; x < roomsPlacer.spawnedRooms.GetLength(0); x++)
+        // Отписываемся от событий при уничтожении
+        RoomsPlacer roomsPlacer = FindObjectOfType<RoomsPlacer>();
+        if (roomsPlacer != null)
         {
-            for (int y = 0; y < roomsPlacer.spawnedRooms.GetLength(1); y++)
-            {
-                if (roomsPlacer.spawnedRooms[x, y] != null)
-                {
-                    Debug.Log($"Minimap: Создаем иконку для комнаты в позиции ({x}, {y})");
-                    
-                    GameObject iconPrefab = roomIconPrefab;
-                    
-                    // Выбираем правильную иконку в зависимости от типа комнаты
-                    if (roomsPlacer.spawnedRooms[x, y].isStartRoom)
-                    {
-                        iconPrefab = startRoomIconPrefab;
-                        Debug.Log("Minimap: Это стартовая комната");
-                    }
-                    else if (roomsPlacer.spawnedRooms[x, y] is BossRoom)
-                    {
-                        iconPrefab = bossRoomIconPrefab;
-                        Debug.Log("Minimap: Это комната босса");
-                    }
+            roomsPlacer.OnRoomCreated -= AddRoomToMinimap;
+        }
+    }
 
-                    // Создаем иконку комнаты
-                    GameObject roomIcon = Instantiate(iconPrefab, minimapContent);
-                    RectTransform iconRect = roomIcon.GetComponent<RectTransform>();
-                    if (iconRect != null)
-                    {
-                        // Настраиваем RectTransform
-                        iconRect.anchorMin = new Vector2(0.5f, 0.5f);
-                        iconRect.anchorMax = new Vector2(0.5f, 0.5f);
-                        iconRect.pivot = new Vector2(0.5f, 0.5f);
-                        iconRect.sizeDelta = new Vector2(iconSize, iconSize);
-                        
-                        // Устанавливаем позицию
-                        Vector2 iconPos = new Vector2(
-                            (x - 5) * (iconSize + spacing),
-                            (y - 5) * (iconSize + spacing)
-                        );
-                        iconRect.anchoredPosition = iconPos;
-                        
-                        Debug.Log($"Minimap: Размер иконки: {iconRect.sizeDelta}");
-                        Debug.Log($"Minimap: Позиция иконки: {iconRect.anchoredPosition}");
-                    }
-                    
-                    // Убедимся, что иконка видима
-                    Image iconImage = roomIcon.GetComponent<Image>();
-                    if (iconImage != null)
-                    {
-                        iconImage.raycastTarget = false;
-                        Color iconColor = iconImage.color;
-                        iconColor.a = 1f;
-                        iconImage.color = iconColor;
-                        Debug.Log($"Minimap: Цвет иконки: {iconColor}");
-                    }
-                    
-                    roomIcons[x, y] = roomIcon;
+    private void AddRoomToMinimap(Room room)
+    {
+        if (room == null) return;
+
+        Vector2Int roomPos = new Vector2Int(
+            Mathf.RoundToInt(room.transform.position.x / 22),
+            Mathf.RoundToInt(room.transform.position.y / 22)
+        );
+        Debug.Log($"Minimap: Добавлена комната {room.name} в позиции: {roomPos}, реальная позиция: {room.transform.position}, isStartRoom: {room.isStartRoom}, уже есть иконка: {roomIcons.ContainsKey(roomPos)}");
+
+        // Сохраняем комнату
+        rooms[roomPos] = room;
+
+        // Определяем тип комнаты
+        if (room.isStartRoom)
+        {
+            startRoomPosition = roomPos;
+            Debug.Log($"Minimap: Обработка стартовой комнаты, позиция: {roomPos}, startRoomIconPrefab: {(startRoomIconPrefab != null ? "назначен" : "не назначен")}");
+            // Создаем иконку стартовой комнаты только один раз
+            if (!roomIcons.ContainsKey(roomPos))
+            {
+                CreateRoomIcon(roomPos, startRoomIconPrefab);
+                Debug.Log($"Minimap: Создана иконка стартовой комнаты в позиции {roomPos}");
+            }
+            else
+            {
+                Debug.Log($"Minimap: Иконка стартовой комнаты уже существует в позиции {roomPos}");
+            }
+            // Устанавливаем как текущую комнату
+            UpdateCurrentRoom(roomPos);
+        }
+        else if (room is BossRoom)
+        {
+            bossRoomPosition = roomPos;
+            CreateRoomIcon(roomPos, bossRoomIconPrefab);
+            Debug.Log($"Minimap: Создана иконка комнаты босса в позиции {roomPos}");
+        }
+        else
+        {
+            CreateRoomIcon(roomPos, roomIconPrefab);
+            Debug.Log($"Minimap: Создана иконка обычной комнаты в позиции {roomPos}");
+        }
+
+        Debug.Log($"Minimap: Всего иконок: {roomIcons.Count}");
+    }
+
+    private void CreateRoomIcon(Vector2Int position, GameObject iconPrefab)
+    {
+        if (iconPrefab == null)
+        {
+            Debug.LogError($"Minimap: Префаб иконки не назначен для позиции {position}");
+            return;
+        }
+
+        if (contentRect == null)
+        {
+            Debug.LogError("Minimap: contentRect не назначен!");
+            return;
+        }
+
+        // Создаем иконку
+        GameObject icon = Instantiate(iconPrefab, contentRect);
+        RectTransform iconRect = icon.GetComponent<RectTransform>();
+        
+        if (iconRect == null)
+        {
+            Debug.LogError($"Minimap: У иконки нет компонента RectTransform!");
+            return;
+        }
+
+        // Устанавливаем позицию относительно центра миникарты
+        float x = position.x * 30;
+        float y = position.y * 30;
+        iconRect.anchoredPosition = new Vector2(x, y);
+        Debug.Log($"Minimap: Создана иконка в позиции {position}, anchoredPosition: {iconRect.anchoredPosition}");
+
+        // Сохраняем иконку
+        roomIcons[position] = icon;
+    }
+
+    public void UpdateCurrentRoom(Vector2Int position)
+    {
+        // Удаляем старую иконку текущей комнаты
+        if (roomIcons.ContainsKey(currentRoomPosition))
+        {
+            // Если это стартовая комната, восстанавливаем её иконку
+            if (currentRoomPosition == startRoomPosition)
+            {
+                Destroy(roomIcons[currentRoomPosition]);
+                roomIcons.Remove(currentRoomPosition);
+                CreateRoomIcon(startRoomPosition, startRoomIconPrefab);
+            }
+            else
+            {
+                Destroy(roomIcons[currentRoomPosition]);
+                roomIcons.Remove(currentRoomPosition);
+                // Если комната была посещена, создаем иконку посещенной комнаты
+                if (rooms.ContainsKey(currentRoomPosition) && rooms[currentRoomPosition].isVisited)
+                {
+                    CreateRoomIcon(currentRoomPosition, visitedRoomIconPrefab);
                 }
             }
         }
 
-        // Создаем иконку текущей комнаты
-        currentRoomIcon = Instantiate(currentRoomIconPrefab, minimapContent);
+        // Создаем новую иконку текущей комнаты
+        currentRoomPosition = position;
+        GameObject currentIcon = Instantiate(currentRoomIconPrefab, contentRect);
+        RectTransform iconRect = currentIcon.GetComponent<RectTransform>();
         
-        // Настраиваем RectTransform текущей иконки
-        RectTransform currentIconRect = currentRoomIcon.GetComponent<RectTransform>();
-        if (currentIconRect != null)
+        if (iconRect != null)
         {
-            currentIconRect.anchorMin = new Vector2(0.5f, 0.5f);
-            currentIconRect.anchorMax = new Vector2(0.5f, 0.5f);
-            currentIconRect.pivot = new Vector2(0.5f, 0.5f);
-            currentIconRect.sizeDelta = new Vector2(iconSize * 1.2f, iconSize * 1.2f);
-            Debug.Log($"Minimap: Размер текущей иконки: {currentIconRect.sizeDelta}");
+            float x = position.x * 30;
+            float y = position.y * 30;
+            iconRect.anchoredPosition = new Vector2(x, y);
+            
+            // Устанавливаем иконку текущей комнаты поверх других
+            currentIcon.transform.SetAsLastSibling();
         }
-        
-        // Убедимся, что иконка текущей комнаты видима
-        Image currentIconImage = currentRoomIcon.GetComponent<Image>();
-        if (currentIconImage != null)
+
+        // Сохраняем иконку
+        roomIcons[position] = currentIcon;
+
+        // Помечаем комнату как посещенную
+        if (rooms.ContainsKey(position))
         {
-            currentIconImage.raycastTarget = false;
-            Color iconColor = currentIconImage.color;
-            iconColor.a = 1f;
-            currentIconImage.color = iconColor;
-            Debug.Log($"Minimap: Цвет текущей иконки: {iconColor}");
+            rooms[position].isVisited = true;
         }
-        
-        Debug.Log("Minimap: Инициализация завершена");
     }
 } 
