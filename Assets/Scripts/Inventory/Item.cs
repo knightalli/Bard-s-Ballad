@@ -7,7 +7,7 @@ public class Item : MonoBehaviour
 {
     public ItemDatabase database;
     public float pickupRange = 2f;
-    public Inventory _inventory;
+    private Inventory _inventory;
     [SerializeField] private SpriteRenderer _spriteRenderer;
 
     private static List<ItemSO> _available;
@@ -16,6 +16,22 @@ public class Item : MonoBehaviour
 
     void Awake()
     {
+        if (_spriteRenderer == null)
+        {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            if (_spriteRenderer == null)
+            {
+                _spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
+            }
+        }
+
+        if (database == null)
+        {
+            Debug.LogError($"ItemDatabase не назначен для предмета {gameObject.name}!");
+            Destroy(gameObject);
+            return;
+        }
+
         if (_available == null)
             _available = new List<ItemSO>(database.allItems);
 
@@ -35,11 +51,26 @@ public class Item : MonoBehaviour
 
     void Start()
     {
-        _player = GameObject.FindGameObjectWithTag("Player").transform;
+        _player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (_player == null)
+        {
+            Debug.LogError("Player не найден на сцене!");
+            Destroy(gameObject);
+            return;
+        }
+
+        _inventory = _player.GetComponent<Inventory>();
+        if (_inventory == null)
+        {
+            _inventory = _player.gameObject.AddComponent<Inventory>();
+            Debug.Log("Inventory компонент был автоматически добавлен на игрока");
+        }
     }
 
     void Update()
     {
+        if (_player == null || _inventory == null) return;
+
         if (Input.GetKeyDown(KeyCode.E) &&
             Vector2.Distance(transform.position, _player.position) <= pickupRange)
         {

@@ -2989,7 +2989,7 @@ Transform:
   m_GameObject: {fileID: 9047104214221079319}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -7.26, y: -5.92, z: 1.5}
+  m_LocalPosition: {x: 0, y: 0, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6008,6 +6008,7 @@ GameObject:
   - component: {fileID: 2649731764112884480}
   - component: {fileID: 6116705266350514767}
   - component: {fileID: 5176012490116433409}
+  - component: {fileID: 9047104214221079320}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -6084,7 +6085,6 @@ SceneRoots:
   - {fileID: 470183904}
   - {fileID: 2480626664549190303}
   - {fileID: 599269392337290409}
-  - {fileID: 8555298463208845097}
   - {fileID: 586059948}
   - {fileID: 2108446996}
   - {fileID: 313664127}
