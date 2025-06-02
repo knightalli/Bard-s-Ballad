@@ -3,7 +3,7 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance { get; private set; }
-    private const int TOTAL_ROOMS = 12; // Общее количество комнат
+    private const int TOTAL_ROOMS = 3; // Общее количество комнат
 
     private void Awake()
     {
