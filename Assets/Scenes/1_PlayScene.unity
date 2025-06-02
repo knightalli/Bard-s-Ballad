@@ -6222,7 +6222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basePower: 10
-  baseCooldown: 5
+  baseCooldown: 1
   baseHealth: 100
   currentPower: 0
   currentCooldown: 0

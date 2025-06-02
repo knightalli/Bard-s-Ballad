@@ -60,19 +60,6 @@ public class Minimap : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-            Debug.Log("MinimapContent children:");
-
-            for (int i = 0; i < contentRect.childCount; i++)
-            {
-                Transform child = contentRect.GetChild(i);
-                Debug.Log($"Child {i}: {child.name}");
-            }
-
-            Debug.Log($"Total children: {contentRect.childCount}");        
-    }
-
     private void OnDestroy()
     {
         // Отписываемся от событий при уничтожении

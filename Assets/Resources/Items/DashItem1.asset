@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Key
   icon: {fileID: 21300000, guid: 5b37d4c9f2f07114fab94b26a7d65931, type: 3}
-  bonusValue: 0.5
+  bonusValue: 0.1
   statType: 1
   audioClips:
   - {fileID: 8300000, guid: 62e43a0dfe7314c4e8a174007721e58f, type: 3}

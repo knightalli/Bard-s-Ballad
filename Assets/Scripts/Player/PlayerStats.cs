@@ -6,7 +6,7 @@ public class PlayerStats : MonoBehaviour
 {
     [Header("Base Values")]
     public float basePower = 10;
-    public float baseCooldown = 5;
+    public float baseCooldown = 1;
     public float baseHealth = 100;
 
     public float currentPower;
