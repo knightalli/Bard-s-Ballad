@@ -28,11 +28,9 @@ public class BossFightController : Enemy
     [SerializeField] private Meteor meteorPrefab;
 
     [SerializeField] private DaggerProjectile daggerPrefab;
-    [SerializeField] private int daggersPerVolley = 3;
     [SerializeField] private float daggerSpeed = 12f;
     [SerializeField] private float timeBetweenDaggers = 0.2f;
 
-    private Transform player;
     private bool phaseTwoStarted = false;
     private Coroutine attackCoroutine;
     private Coroutine healthMonitorCoroutine;
@@ -47,7 +45,6 @@ public class BossFightController : Enemy
     protected override void Start()
     {
         base.Start();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
         healthMonitorCoroutine = StartCoroutine(MonitorHealth());
         attackCoroutine = StartCoroutine(AttackRoutine());
     }
