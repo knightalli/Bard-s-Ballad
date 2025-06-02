@@ -17,7 +17,7 @@ public class Minimap : MonoBehaviour
     private Vector2Int startRoomPosition;
     private RectTransform contentRect;
 
-    private void Start()
+    private void Awake()
     {
         // Настраиваем RectTransform контейнера миникарты
         RectTransform rectTransform = GetComponent<RectTransform>();
@@ -53,7 +53,6 @@ public class Minimap : MonoBehaviour
         {
             // Подписываемся на событие создания комнаты
             roomsPlacer.OnRoomCreated += AddRoomToMinimap;
-
         }
         else
         {

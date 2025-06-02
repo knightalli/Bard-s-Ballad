@@ -14,8 +14,8 @@ public class Meteor : MonoBehaviour
 
     public void Explode()
     {
-        var pos = new Vector3(transform.position.x, transform.position.y, 0);
-        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        var pos = new Vector3(transform.position.x, transform.position.y, 5);
+        Instantiate(explosionPrefab, pos, Quaternion.identity);
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
         foreach (var hit in hits)
