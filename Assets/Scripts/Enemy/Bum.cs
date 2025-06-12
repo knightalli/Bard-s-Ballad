@@ -15,12 +15,13 @@ public class Bum : Enemy
     private SpriteRenderer _sr;
     private Transform _playerTransform;
     private Rigidbody2D _rb;
+    public Animator animator;
 
     protected override void Start()
     {
         base.Start();
         _rb = GetComponent<Rigidbody2D>();
-        
+
         // Находим игрока по тегу
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)

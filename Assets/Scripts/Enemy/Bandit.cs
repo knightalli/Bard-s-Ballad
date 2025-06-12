@@ -11,6 +11,7 @@ public class Bandit : Enemy
     [SerializeField] private int _customDamage;
     [SerializeField] private LayerMask _whatIsPlayer;
     [SerializeField] private GameObject _enemyBulletPrefab;
+    public Animator animator;
 
     private float _timeBtwAttack;
     private SpriteRenderer _sr;

@@ -17,19 +17,7 @@ MonoBehaviour:
   bonusValue: 35
   statType: 2
   audioClips:
-  - {fileID: 8300000, guid: 3a20c72de276e1247bc21aab424514a2, type: 3}
-  - {fileID: 8300000, guid: 485b5d04e1d5367408851b35b9c21230, type: 3}
-  - {fileID: 8300000, guid: 92353896cd94e574f838f73472e1fc10, type: 3}
-  - {fileID: 8300000, guid: 3695a91a8d63e3144ba9bcd280b612e8, type: 3}
-  - {fileID: 8300000, guid: 27acafdafa1f88543ab25e91e97965fa, type: 3}
-  - {fileID: 8300000, guid: e1895fbb5d7cf2048acd80ab2031c998, type: 3}
-  - {fileID: 8300000, guid: 23f16885f71a2f143b08c316ec918c20, type: 3}
-  - {fileID: 8300000, guid: 02d67fd19b1d1df439841789c00a8e88, type: 3}
-  - {fileID: 8300000, guid: 8944adb8f723cac45b37936f628a7603, type: 3}
-  - {fileID: 8300000, guid: 35619e482f799f24db17dcdccd1175d0, type: 3}
-  - {fileID: 8300000, guid: 2ed27b1a4187a50488407bef25fdb3d7, type: 3}
-  - {fileID: 8300000, guid: ad5926fce38ec7844bde6f08688b0488, type: 3}
-  - {fileID: 8300000, guid: 1d0c790136a1c3342915215ed49cfeef, type: 3}
-  - {fileID: 8300000, guid: 95df24002e7f9ae4d9d189f50a8d8bbb, type: 3}
-  - {fileID: 8300000, guid: c95effa0e63c38842957b92bc343577d, type: 3}
-  - {fileID: 8300000, guid: a62701cd593e2ab4088866f84136a36d, type: 3}
+  - {fileID: 8300000, guid: ba6e7643440e133429566c3566756183, type: 3}
+  - {fileID: 8300000, guid: 5933adccceea7fc4eadbe27cd2659102, type: 3}
+  - {fileID: 8300000, guid: 7513cf1e86127b9468f9eeea9d2cf658, type: 3}
+  - {fileID: 8300000, guid: daa857abe0b15e346814d653b171b660, type: 3}

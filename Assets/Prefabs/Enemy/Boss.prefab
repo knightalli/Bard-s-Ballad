@@ -1423,7 +1423,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5bd3f86cd1411b644b7969ea04324be8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2f8bfb2469a10bb4f94162048aaee0d1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1542,7 +1542,6 @@ MonoBehaviour:
   - {fileID: 6881947725186931908}
   meteorPrefab: {fileID: 2256202011637838861, guid: c89f5ccec61961b40803c633b484b923, type: 3}
   daggerPrefab: {fileID: 8464106622095857692, guid: baa6305ff629b8a48931b57a7f3ed98d, type: 3}
-  daggersPerVolley: 3
   daggerSpeed: 15
   timeBetweenDaggers: 0.2
 --- !u!50 &3084457945436464802
@@ -1608,7 +1607,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.12, y: 1.27}
+    oldSize: {x: 1.8333334, y: 1.8333334}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

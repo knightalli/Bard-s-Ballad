@@ -18,6 +18,7 @@ public class PlayerBhvr : MonoBehaviour
     private float _dashCooldownTimer;
     private bool _isInvincible;
     private int _enemyLayerIndex;
+    public Animator animator;
 
     void Start()
     {
@@ -34,6 +35,9 @@ public class PlayerBhvr : MonoBehaviour
         {
             _moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             _moveVelocity = _moveInput.normalized * _moveSpeed;
+
+            animator.SetFloat("Move", Mathf.Abs(_moveInput.x) + Mathf.Abs(_moveInput.y));
+
             if (Mathf.Abs(_moveInput.x) > 0.01f)
                 _sr.flipX = _moveInput.x < 0;
         }

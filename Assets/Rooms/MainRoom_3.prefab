@@ -202,7 +202,7 @@ MonoBehaviour:
   - {fileID: 2906935351971687158}
   - {fileID: 284284774356974110}
   possibleEnemies:
-  - {fileID: 1489100612610314481, guid: 208aa41afe156fb4995150fb45485687, type: 3}
+  - {fileID: 7762456657644224522, guid: 6e759ed13181800499ace6af2dd827f7, type: 3}
   minEnemies: 1
   maxEnemies: 2
   upgradeSpawnPoints:
@@ -1008,7 +1008,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef7001adeed08d4aa84979f1b0027fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 0
   wasLocked: 0
+  toBoss: 0
 --- !u!1 &1415040402055578438
 GameObject:
   m_ObjectHideFlags: 0
@@ -2596,7 +2598,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef7001adeed08d4aa84979f1b0027fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 0
   wasLocked: 0
+  toBoss: 0
 --- !u!1 &3788314499157303794
 GameObject:
   m_ObjectHideFlags: 0
@@ -2645,7 +2649,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef7001adeed08d4aa84979f1b0027fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 0
   wasLocked: 0
+  toBoss: 0
 --- !u!1 &4065762090450037937
 GameObject:
   m_ObjectHideFlags: 0
@@ -4130,7 +4136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef7001adeed08d4aa84979f1b0027fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isLocked: 0
   wasLocked: 0
+  toBoss: 0
 --- !u!1 &7978315781710319131
 GameObject:
   m_ObjectHideFlags: 0
