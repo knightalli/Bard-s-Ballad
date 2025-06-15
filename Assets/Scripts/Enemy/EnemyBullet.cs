@@ -6,6 +6,7 @@ public class EnemyBullet : MonoBehaviour
     [SerializeField] private float _distance;
     [SerializeField] private int _damage;
     [SerializeField] private LayerMask _whatIsPlayer;
+    [SerializeField] private LayerMask _whatIsWall;
 
     private void Update()
     {
@@ -19,6 +20,14 @@ public class EnemyBullet : MonoBehaviour
             }
             Destroy(gameObject);
         }
+
+        RaycastHit2D hitWall = Physics2D.Raycast(transform.position, transform.right, _distance, _whatIsWall);
+        if (hitWall.collider != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         transform.Translate(Vector2.right * _speed * Time.deltaTime);
     }
 }

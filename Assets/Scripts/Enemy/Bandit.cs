@@ -14,7 +14,6 @@ public class Bandit : Enemy
     public Animator animator;
 
     private float _timeBtwAttack;
-    private SpriteRenderer _sr;
     private Transform _playerTransform;
 
     protected override void Start()
@@ -35,7 +34,6 @@ public class Bandit : Enemy
         SetHealth(_customHealth);
         SetDamage(_customDamage);
         _timeBtwAttack = _startTimeBtwAttack;
-        _sr = GetComponent<SpriteRenderer>();
     }
 
     protected override void Update()
@@ -74,7 +72,7 @@ public class Bandit : Enemy
         if (_playerTransform == null) return;
 
         Vector3 direction = (_playerTransform.position - transform.position).normalized;
-        _sr.flipX = direction.x < 0;
+        sr.flipX = direction.x < 0;
     }
 
     private void RangedAttack()

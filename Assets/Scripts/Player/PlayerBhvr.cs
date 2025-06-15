@@ -18,6 +18,8 @@ public class PlayerBhvr : MonoBehaviour
     private float _dashCooldownTimer;
     private bool _isInvincible;
     private int _enemyLayerIndex;
+    private float _hitFlashTimer;
+    private const float HitFlashDuration = 0.5f;
 
     public bool stop = false;
     public Animator animator;
@@ -32,7 +34,7 @@ public class PlayerBhvr : MonoBehaviour
         }
     }
 
-        void Start()
+    void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponent<SpriteRenderer>();
@@ -63,6 +65,13 @@ public class PlayerBhvr : MonoBehaviour
             _dashTimeLeft -= Time.unscaledDeltaTime;
             if (_dashTimeLeft <= 0f)
                 EndDash();
+        }
+
+        if (_hitFlashTimer > 0f)
+        {
+            _hitFlashTimer -= Time.deltaTime;
+            if (_hitFlashTimer <= 0f)
+                _sr.color = Color.white;
         }
     }
 
@@ -105,8 +114,16 @@ public class PlayerBhvr : MonoBehaviour
     {
         if (_isInvincible) return;
         _playerStats.TakeDamage(damage);
+
+        _sr.color = Color.red;
+        _hitFlashTimer = HitFlashDuration;
+
         if (_playerStats.currentHealth <= 0)
+        {
             Destroy(gameObject);
+            CanvasManager.Instance.ShowLoseScreen();
+        }
+
     }
 
     public void StopPlayer()

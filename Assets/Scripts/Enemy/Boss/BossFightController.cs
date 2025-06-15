@@ -31,7 +31,6 @@ public class BossFightController : Enemy
     [SerializeField] private float daggerSpeed = 12f;
     [SerializeField] private float timeBetweenDaggers = 0.2f;
 
-    private bool phaseTwoStarted = false;
     private Coroutine attackCoroutine;
     private Coroutine healthMonitorCoroutine;
 
@@ -44,9 +43,10 @@ public class BossFightController : Enemy
 
     protected override void Start()
     {
+        PlayerBhvr.Instance.StopPlayer();
         base.Start();
-        healthMonitorCoroutine = StartCoroutine(MonitorHealth());
         attackCoroutine = StartCoroutine(AttackRoutine());
+        PlayerBhvr.Instance.StartPlayer();
     }
 
     protected override void Update()
@@ -59,23 +59,6 @@ public class BossFightController : Enemy
         }
     }
 
-    private IEnumerator MonitorHealth()
-    {
-        while (GetHealth() > 0)
-        {
-            if (!phaseTwoStarted && GetHealth() <= maxHealth / 2)
-            {
-                phaseTwoStarted = true;
-                if (attackCoroutine != null)
-                {
-                    StopCoroutine(attackCoroutine);
-                }
-                attackCoroutine = StartCoroutine(AttackRoutine());
-            }
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
     public override void TakeDamage(float damage)
     {
         base.TakeDamage(damage);
@@ -83,7 +66,7 @@ public class BossFightController : Enemy
 
     private IEnumerator AttackRoutine()
     {
-        yield return new WaitForSeconds(1f);
+        //yield return new WaitForSeconds(1f);
 
         while (GetHealth() > 0 && !IsStunned())
         {
@@ -99,11 +82,7 @@ public class BossFightController : Enemy
         }
 
         if (GetHealth() <= 0)
-        {
-            if (healthMonitorCoroutine != null)
-            {
-                StopCoroutine(healthMonitorCoroutine);
-            }
+        {            
             OnBossDefeated();
         }
     }
@@ -177,12 +156,15 @@ public class BossFightController : Enemy
 
     private void OnBossDefeated()
     {
+        CanvasManager.Instance.ShowWinScreen();
         BossDefeated?.Invoke();
         Destroy(gameObject, 1f);
+
     }
 
     public override void Die()
     {
+        CanvasManager.Instance.ShowWinScreen();
         BossDefeated?.Invoke();
         base.Die();
     }

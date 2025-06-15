@@ -7,12 +7,13 @@ public class Enemy : MonoBehaviour
     protected float _stunTimer;
 
     private float _stunDuration = 0.5f;
+    protected SpriteRenderer sr;
 
     private Room currentRoom;
 
     protected virtual void Start()
     {
-        // Базовая инициализация
+        sr = GetComponent<SpriteRenderer>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -38,14 +39,20 @@ public class Enemy : MonoBehaviour
         if (_stunTimer > 0f)
         {
             _stunTimer -= Time.deltaTime;
+            if (_stunTimer <= 0f)
+            {
+                if (sr != null)
+                    sr.color = Color.white;
+            }
             return;
         }       
     }
 
     public virtual void TakeDamage(float damage)
     {
-        print(damage + "  " + _health);
         _health -= damage;
+        if (sr != null)
+            sr.color = Color.red;
 
         _stunTimer = _stunDuration;
 

@@ -1446,7 +1446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55125705d0c8f074c910346730edf8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 1000
   _ricochetSpawnPoints:
   - {fileID: 1448502521666175050}
   - {fileID: 7629661950332626360}

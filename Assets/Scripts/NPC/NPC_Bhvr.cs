@@ -5,6 +5,8 @@ public class NPC_Bhvr : MonoBehaviour
 {
     [SerializeField] private GameObject _button;
     [SerializeField] private NPCConversation _conversation;
+    [SerializeField] private Item _itemPrefab;
+    [SerializeField] private Transform _itemSpawn;
 
     private bool _isPlayerInTrigger = false;
 
@@ -36,5 +38,10 @@ public class NPC_Bhvr : MonoBehaviour
             _button.SetActive(false);
             _isPlayerInTrigger = false;
         }
+    }
+
+    public void AddItem()
+    {
+        Instantiate(_itemPrefab, _itemSpawn);
     }
 }

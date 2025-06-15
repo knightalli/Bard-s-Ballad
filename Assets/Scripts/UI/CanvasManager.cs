@@ -1,3 +1,4 @@
+// CanvasManager.cs
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,88 +48,105 @@ public class CanvasManager : MonoBehaviour
 
     private void Start()
     {
-        // ќбучение
+        // Ч Training Ч
         trainingCanvas1.gameObject.SetActive(false);
         trainingCanvas2.gameObject.SetActive(false);
+
         trainingContinueButton1.onClick.AddListener(() =>
         {
+            // переключение внутри обучени€ Ч остаЄмс€ в режиме стопа игрока
             trainingCanvas1.gameObject.SetActive(false);
             trainingCanvas2.gameObject.SetActive(true);
         });
         trainingContinueButton2.onClick.AddListener(() =>
         {
+            // закрытие обучени€
             trainingCanvas2.gameObject.SetActive(false);
             _isOpen = false;
         });
 
-        // Ёкран победы
+        // Ч Win Screen Ч
         winScreenCanvas.gameObject.SetActive(false);
         winCloseButton.onClick.AddListener(() =>
         {
-            winScreenCanvas.gameObject.SetActive(false);
-            _isOpen = false;
+            SceneManager.LoadScene(0);
         });
         winRetryButton.onClick.AddListener(() =>
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex)
-        );
+        {
+            SceneManager.LoadScene(1);
+        });
 
-        // Ёкран поражени€
+        // Ч Lose Screen Ч
         loseScreenCanvas.gameObject.SetActive(false);
         loseCloseButton.onClick.AddListener(() =>
         {
-            loseScreenCanvas.gameObject.SetActive(false);
-            _isOpen = false;
+            SceneManager.LoadScene(0);
         });
         loseRetryButton.onClick.AddListener(() =>
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex)
-        );
+        {
+            SceneManager.LoadScene(1);
+        });
     }
 
     public void StartTraining()
     {
+        PlayerBhvr.Instance.StopPlayer();
         trainingCanvas1.gameObject.SetActive(true);
         _isOpen = true;
     }
 
     public void ShowSingleScreen(Canvas screen, Button closeButton, UnityAction onClose = null)
     {
+        Time.timeScale = 0f;
         if (screen == null || closeButton == null) return;
+
         screen.gameObject.SetActive(true);
         _isOpen = true;
+
         closeButton.onClick.RemoveAllListeners();
         closeButton.onClick.AddListener(() =>
         {
-            screen.gameObject.SetActive(false);
-            _isOpen = false;
-            onClose?.Invoke();
+            Time.timeScale = 1f;
+            SceneManager.LoadScene(0);
         });
     }
 
     public void ShowSequenceScreens(List<Canvas> screens, Button nextButton)
     {
         if (screens == null || screens.Count == 0 || nextButton == null) return;
+
+        // деактивируем все сразу
         screens.ForEach(c => c.gameObject.SetActive(false));
+
+        PlayerBhvr.Instance.StopPlayer();
         _sequence = screens;
         _currentIndex = 0;
         _sequenceButton = nextButton;
         _isOpen = true;
+
         _sequenceButton.onClick.RemoveAllListeners();
         _sequenceButton.onClick.AddListener(ShowNextInSequence);
+
         _sequence[_currentIndex].gameObject.SetActive(true);
     }
 
     private void ShowNextInSequence()
     {
         if (_sequence == null) return;
+
         _sequence[_currentIndex].gameObject.SetActive(false);
         _currentIndex++;
+
         if (_currentIndex < _sequence.Count)
+        {
             _sequence[_currentIndex].gameObject.SetActive(true);
+        }
         else
         {
             _sequenceButton.onClick.RemoveAllListeners();
             _sequence = null;
             _isOpen = false;
+            PlayerBhvr.Instance.StartPlayer();
         }
     }
 

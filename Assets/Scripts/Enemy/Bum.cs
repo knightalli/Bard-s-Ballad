@@ -12,7 +12,6 @@ public class Bum : Enemy
     [SerializeField] private LayerMask _whatIsPlayer;
 
     private float _timeBtwAttack;
-    private SpriteRenderer _sr;
     private Transform _playerTransform;
     private Rigidbody2D _rb;
     public Animator animator;
@@ -36,7 +35,6 @@ public class Bum : Enemy
         SetHealth(_customHealth);
         SetDamage(_customDamage);
         _timeBtwAttack = _startTimeBtwAttack;
-        _sr = GetComponent<SpriteRenderer>();
     }
 
     protected override void Update()
@@ -84,7 +82,7 @@ public class Bum : Enemy
 
         Vector2 direction = (_playerTransform.position - transform.position).normalized;
         _rb.velocity = direction * _moveSpeed;
-        _sr.flipX = direction.x < 0;
+        sr.flipX = direction.x < 0;
     }
 
     private void MeleeAttack()

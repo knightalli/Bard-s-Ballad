@@ -103,3 +103,6 @@ MonoBehaviour:
   _whatIsPlayer:
     serializedVersion: 2
     m_Bits: 256
+  _whatIsWall:
+    serializedVersion: 2
+    m_Bits: 512
