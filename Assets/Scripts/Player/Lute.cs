@@ -32,7 +32,7 @@ public class Lute : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale == 0f) return;
+        if (Time.timeScale == 0f || PlayerBhvr.Instance.stop) return;
         if (_inventoryController != null && _inventoryController.IsInventoryOpen) return;
 
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);

@@ -18,9 +18,21 @@ public class PlayerBhvr : MonoBehaviour
     private float _dashCooldownTimer;
     private bool _isInvincible;
     private int _enemyLayerIndex;
+
+    public bool stop = false;
     public Animator animator;
 
-    void Start()
+    public static PlayerBhvr Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+
+        void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponent<SpriteRenderer>();
@@ -29,7 +41,7 @@ public class PlayerBhvr : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale == 0f) return;
+        if (Time.timeScale == 0f || stop) return;
 
         if (!_isDashing)
         {
@@ -95,5 +107,15 @@ public class PlayerBhvr : MonoBehaviour
         _playerStats.TakeDamage(damage);
         if (_playerStats.currentHealth <= 0)
             Destroy(gameObject);
+    }
+
+    public void StopPlayer()
+    {
+        stop = true;
+    }
+
+    public void StartPlayer()
+    {
+        stop = false;
     }
 }

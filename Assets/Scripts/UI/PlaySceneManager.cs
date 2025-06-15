@@ -41,6 +41,9 @@ public class PlaySceneManager : MonoBehaviour
 
     private void Update()
     {
+        if (CanvasManager.Instance.IsAnyScreenOpen)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (MusicManager.Instance != null)

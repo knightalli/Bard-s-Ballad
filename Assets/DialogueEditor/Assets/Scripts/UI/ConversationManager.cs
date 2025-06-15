@@ -145,6 +145,7 @@ namespace DialogueEditor
 
         public void StartConversation(NPCConversation conversation)
         {
+            PlayerBhvr.Instance.StopPlayer();
             m_conversation = conversation.Deserialize();
             if (OnConversationStarted != null)
                 OnConversationStarted.Invoke();
@@ -156,6 +157,7 @@ namespace DialogueEditor
 
         public void EndConversation()
         {
+            PlayerBhvr.Instance.StartPlayer();
             SetState(eState.TransitioningDialogueOff);
 
             if (OnConversationEnded != null)
