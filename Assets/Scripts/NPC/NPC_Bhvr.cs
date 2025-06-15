@@ -7,14 +7,19 @@ public class NPC_Bhvr : MonoBehaviour
     [SerializeField] private NPCConversation _conversation;
     [SerializeField] private Item _itemPrefab;
     [SerializeField] private Transform _itemSpawn;
+    [SerializeField] private Animator _anim;
 
     private bool _isPlayerInTrigger = false;
 
-    public bool isFirstTalk = true;
+    public bool isFirstTalk = true;    
 
+    private void Start()
+    {
+        
+    }
     private void Update()
     {
-        if (_isPlayerInTrigger && Input.GetKeyDown(KeyCode.E))
+        if (_isPlayerInTrigger && Input.GetKeyDown(KeyCode.E) && !PlayerBhvr.Instance.IsTalking)
         {            
             ConversationManager.Instance.StartConversation(_conversation);
             ConversationManager.Instance.SetBool("FirstTalk", isFirstTalk);

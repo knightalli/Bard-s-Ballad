@@ -1617,7 +1617,7 @@ Transform:
   m_GameObject: {fileID: 862543002}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.99, y: -0.16, z: 0}
+  m_LocalPosition: {x: 4.12, y: 6.12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2517,6 +2517,7 @@ MonoBehaviour:
   _conversation: {fileID: 1564976109}
   _itemPrefab: {fileID: 3817631361400708537, guid: d3a4ffde784f9564eb63fac8cefb2bcc, type: 3}
   _itemSpawn: {fileID: 862543003}
+  _anim: {fileID: 533640574}
   isFirstTalk: 1
 --- !u!1 &1361836195
 GameObject:
@@ -9829,6 +9830,7 @@ MonoBehaviour:
   _playerStats: {fileID: 5176012490116433409}
   stop: 0
   animator: {fileID: 9047104214221079320}
+  IsTalking: 0
 --- !u!212 &6743744404907341864
 SpriteRenderer:
   m_ObjectHideFlags: 0

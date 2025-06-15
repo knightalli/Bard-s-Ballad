@@ -23,6 +23,7 @@ public class PlayerBhvr : MonoBehaviour
 
     public bool stop = false;
     public Animator animator;
+    public bool IsTalking = false;
 
     public static PlayerBhvr Instance { get; private set; }
 

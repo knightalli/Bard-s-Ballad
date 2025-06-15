@@ -68,7 +68,7 @@ public class BossFightController : Enemy
     {
         //yield return new WaitForSeconds(1f);
 
-        while (GetHealth() > 0 && !IsStunned())
+        while (GetHealth() > 0)
         {
             yield return StartCoroutine(Phase1_RicochetNotes());
             yield return new WaitForSeconds(timeBetweenAttacks);
@@ -78,7 +78,6 @@ public class BossFightController : Enemy
             yield return new WaitForSeconds(timeBetweenAttacks);
             yield return StartCoroutine(Phase2_DaggerVolley());
             yield return new WaitForSeconds(timeBetweenAttacks);
-
         }
 
         if (GetHealth() <= 0)
@@ -167,17 +166,5 @@ public class BossFightController : Enemy
         CanvasManager.Instance.ShowWinScreen();
         BossDefeated?.Invoke();
         base.Die();
-    }
-
-    private void OnDisable()
-    {
-        if (healthMonitorCoroutine != null)
-        {
-            StopCoroutine(healthMonitorCoroutine);
-        }
-        if (attackCoroutine != null)
-        {
-            StopCoroutine(attackCoroutine);
-        }
     }
 }
