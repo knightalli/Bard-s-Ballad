@@ -12,7 +12,7 @@ public class RoomsPlacer : MonoBehaviour
     public event Action<Room> OnRoomCreated;
 
     public Room[,] spawnedRooms;
-    private int roomsToGenerate = 8;
+    private int roomsToGenerate = 5;
     private int currentRoomCount = 0;
     private Vector2Int bossRoomPosition;
 

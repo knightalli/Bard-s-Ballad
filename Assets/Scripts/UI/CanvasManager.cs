@@ -1,10 +1,9 @@
 // CanvasManager.cs
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
-using DialogueEditor;
+using UnityEngine.UI;
 
 public class CanvasManager : MonoBehaviour
 {
@@ -69,10 +68,12 @@ public class CanvasManager : MonoBehaviour
         winScreenCanvas.gameObject.SetActive(false);
         winCloseButton.onClick.AddListener(() =>
         {
+            Time.timeScale = 1f;
             SceneManager.LoadScene(0);
         });
         winRetryButton.onClick.AddListener(() =>
         {
+            Time.timeScale = 1f;
             SceneManager.LoadScene(1);
         });
 
@@ -80,10 +81,12 @@ public class CanvasManager : MonoBehaviour
         loseScreenCanvas.gameObject.SetActive(false);
         loseCloseButton.onClick.AddListener(() =>
         {
+            Time.timeScale = 1f;
             SceneManager.LoadScene(0);
         });
         loseRetryButton.onClick.AddListener(() =>
         {
+            Time.timeScale = 1f;
             SceneManager.LoadScene(1);
         });
     }
