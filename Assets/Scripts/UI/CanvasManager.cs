@@ -69,11 +69,13 @@ public class CanvasManager : MonoBehaviour
         winCloseButton.onClick.AddListener(() =>
         {
             Time.timeScale = 1f;
+            _isOpen = false;
             SceneManager.LoadScene(0);
         });
         winRetryButton.onClick.AddListener(() =>
         {
             Time.timeScale = 1f;
+            _isOpen = false;
             SceneManager.LoadScene(1);
         });
 
@@ -82,11 +84,13 @@ public class CanvasManager : MonoBehaviour
         loseCloseButton.onClick.AddListener(() =>
         {
             Time.timeScale = 1f;
+            _isOpen = false;
             SceneManager.LoadScene(0);
         });
         loseRetryButton.onClick.AddListener(() =>
         {
             Time.timeScale = 1f;
+            _isOpen = false;
             SceneManager.LoadScene(1);
         });
     }
@@ -110,6 +114,7 @@ public class CanvasManager : MonoBehaviour
         closeButton.onClick.AddListener(() =>
         {
             Time.timeScale = 1f;
+            _isOpen = false;
             SceneManager.LoadScene(0);
         });
     }

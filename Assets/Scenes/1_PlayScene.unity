@@ -2199,7 +2199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerStats: {fileID: 5176012490116433409}
   _healthText: {fileID: 1704546830}
-  _healthSprite: {fileID: 0}
+  _healthSprite: {fileID: 1218800971}
 --- !u!1 &1268500753
 GameObject:
   m_ObjectHideFlags: 0
